@@ -1,0 +1,164 @@
+<!-- Floating background elements for visual appeal -->
+<div class="floating-elements">
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+</div>
+
+<!-- Main container for the level content -->
+<div class="container">
+  <!-- Header section with navigation, title, and progress bar -->
+  <div class="header">
+    <button class="back-btn" routerLink="/beginner">← Back to Levels</button>
+    <h1 class="level-title">Level 2</h1>
+    <p class="level-subtitle">Headings and Paragraphs</p>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <!-- Grid layout for explanation and coding panels -->
+  <div class="content-grid">
+    <!-- Left panel: Explanations and examples -->
+    <div class="explanation-panel">
+      <h2>📝 Organizing Content with Headings</h2>
+      <p>
+        <span class="highlight">Headings</span> are like titles in a book. They help organize your content
+        and tell people what each section is about. HTML has 6 different heading sizes!
+      </p>
+
+      <!-- Showcase of all heading types -->
+      <div class="heading-showcase">
+        <div class="heading-example">
+          <code>&lt;h1&gt;</code> <h1 style="margin: 5px 0; font-size: 2rem;">Biggest Heading</h1>
+        </div>
+        <div class="heading-example">
+          <code>&lt;h2&gt;</code> <h2 style="margin: 5px 0; font-size: 1.5rem;">Second Biggest</h2>
+        </div>
+        <div class="heading-example">
+          <code>&lt;h3&gt;</code> <h3 style="margin: 5px 0; font-size: 1.2rem;">Third Level</h3>
+        </div>
+        <div class="heading-example">
+          <code>&lt;h4&gt;</code> <h4 style="margin: 5px 0; font-size: 1rem;">Fourth Level</h4>
+        </div>
+        <div class="heading-example">
+          <code>&lt;h5&gt;</code> <h5 style="margin: 5px 0; font-size: 0.9rem;">Fifth Level</h5>
+        </div>
+        <div class="heading-example">
+          <code>&lt;h6&gt;</code> <h6 style="margin: 5px 0; font-size: 0.8rem;">Smallest</h6>
+        </div>
+      </div>
+
+      <h3>📖 Paragraphs for Text</h3>
+      <p>
+        <span class="highlight">Paragraphs</span> use the <code>&lt;p&gt;</code> tag. They automatically
+        add space before and after the text, making your content easy to read.
+      </p>
+
+      <!-- Example code block -->
+      <div class="example-code">
+&lt;h1&gt;Welcome to My Blog&lt;/h1&gt;
+&lt;h2&gt;About Me&lt;/h2&gt;
+&lt;p&gt;Hi! I'm learning HTML and it's so cool!&lt;/p&gt;
+&lt;p&gt;This is my second paragraph.&lt;/p&gt;
+
+&lt;h2&gt;My Hobbies&lt;/h2&gt;
+&lt;p&gt;I love coding, reading, and playing games.&lt;/p&gt;
+      </div>
+
+      <!-- Pro tip box -->
+      <div class="tip-box">
+        <h4>🎯 Pro Tip!</h4>
+        <p>Use <strong>h1</strong> for your main title, <strong>h2</strong> for section titles,
+        and <strong>h3-h6</strong> for smaller subsections. It's like creating an outline!</p>
+      </div>
+    </div>
+
+    <!-- Right panel: Coding editor and output -->
+    <div class="coding-section">
+      <!-- Code editor terminal window -->
+      <div class="terminal-section">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          💻 Code Editor
+        </div>
+        <textarea
+          class="code-editor"
+          [(ngModel)]="userCode"
+          (input)="onCodeChange()"
+          placeholder="Create your webpage with headings and paragraphs...">{{defaultCode}}</textarea>
+      </div>
+
+      <!-- Live output terminal window -->
+      <div class="terminal-section">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          🌐 Live Output
+        </div>
+        <div class="output-display" [innerHTML]="renderedOutput"></div>
+      </div>
+
+      <!-- Action buttons for the editor -->
+      <div class="button-group">
+        <button class="action-btn" (click)="runCode()">▶️ Run Code</button>
+        <button class="action-btn secondary" (click)="resetCode()">🔄 Reset</button>
+        <button class="action-btn secondary" (click)="showHint()">💡 Hint</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenge checklist section -->
+  <div class="challenge-section">
+    <h3>🎯 Your Mission</h3>
+    <div class="challenge-steps">
+      <div class="step" [class.completed]="checkStepCompleted(1)">
+        <span class="step-number">1</span>
+        <span class="step-text">Create a main heading (h1) about yourself</span>
+        <span class="step-status">{{checkStepCompleted(1) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(2)">
+        <span class="step-number">2</span>
+        <span class="step-text">Add a section heading (h2) for "About Me"</span>
+        <span class="step-status">{{checkStepCompleted(2) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(3)">
+        <span class="step-number">3</span>
+        <span class="step-text">Write a paragraph about yourself</span>
+        <span class="step-status">{{checkStepCompleted(3) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(4)">
+        <span class="step-number">4</span>
+        <span class="step-text">Add another h2 and paragraph about your hobbies</span>
+        <span class="step-status">{{checkStepCompleted(4) ? '✅' : '⭕'}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hint box, hidden by default -->
+  <div class="hint-box" [class.visible]="showHintBox">
+    <h3>💡 Need Help?</h3>
+    <ul>
+      <li>Use <code>&lt;h1&gt;Your Name's Website&lt;/h1&gt;</code> for your main title</li>
+      <li>Section headings use <code>&lt;h2&gt;Section Name&lt;/h2&gt;</code></li>
+      <li>Paragraphs go between <code>&lt;p&gt;</code> and <code>&lt;/p&gt;</code> tags</li>
+      <li>Try to write at least 2-3 sentences in each paragraph</li>
+    </ul>
+  </div>
+
+  <!-- Completion message, shown when level is finished -->
+  <div class="next-level" *ngIf="isLevelCompleted">
+    <div class="completion-message">
+      <h2>🎉 Amazing Work!</h2>
+      <p>You've mastered headings and paragraphs! Your content is now well-organized.</p>
+      <button class="action-btn" routerLink="/lesson/3">Continue to Level 3 ➡️</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="auth-page ">
+  <canvas #bladeTrail class="blade-trail"></canvas>
+
+  <div class="login-container">
+    <div class="avatar">
+      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712104.png" alt="Robot Avatar" />
+    </div>
+
+    <h2>Log In Coder 🤖</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="you@coder.com"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <div *ngIf="email?.invalid && email?.touched" class="error-message">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <div *ngIf="password?.invalid && password?.touched" class="error-message">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            formControlName="rememberMe"
+          />
+          <span class="checkmark"></span>
+          Remember me
+        </label>
+        <a href="#" class="forgot-password" (click)="onForgotPassword(); $event.preventDefault()">
+          Forgot Password?
+        </a>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-banner">
+        {{ errorMessage }}
+      </div>
+
+      <div class="button-group">
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading"
+          [class.loading]="isLoading"
+        >
+          <span *ngIf="!isLoading">Log In</span>
+          <span *ngIf="isLoading">
+            <span class="spinner"></span>
+            Logging in...
+          </span>
+        </button>
+        <a routerLink="/signup" class="signup-button">Sign Up</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<!-- beginner.component.html -->
+<div class="background-graphics">
+  <div class="graphic-left"></div>
+  <div class="graphic-right"></div>
+</div>
+
+<div class="container">
+  <h1 class="page-title">Beginner Levels</h1>
+  <p class="subtitle">Start your coding journey with these fun HTML lessons!</p>
+
+  <div class="progress-overview">
+    <div class="progress-stats">
+      <span class="stat">
+        <span class="stat-number">{{getCompletedCount()}}</span>
+        <span class="stat-label">Completed</span>
+      </span>
+      <span class="stat">
+        <span class="stat-number">{{levels.length}}</span>
+        <span class="stat-label">Total Levels</span>
+      </span>
+      <span class="stat">
+        <span class="stat-number">{{getProgressPercentage()}}%</span>
+        <span class="stat-label">Progress</span>
+      </span>
+    </div>
+    <div class="overall-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+    </div>
+
+    <!-- Test buttons for development -->
+    <div class="test-controls" style="margin-top: 15px; text-align: center;">
+      <button
+        *ngFor="let level of levels.slice(0, 3)"
+        (click)="markLevelCompleted(level.id)"
+        style="margin: 5px; padding: 8px 12px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      >
+        Complete Level {{level.id}}
+      </button>
+      <button
+        (click)="resetProgress()"
+        style="margin: 5px; padding: 8px 12px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      >
+        Reset Progress
+      </button>
+    </div>
+  </div>
+
+  <div class="levels">
+    <div
+      *ngFor="let level of levels; trackBy: trackByLevelId"
+      class="level-card"
+      [class.completed]="level.completed"
+      [class.locked]="isLevelLocked(level)"
+      (click)="selectLevel(level)"
+      [style.cursor]="isLevelLocked(level) ? 'not-allowed' : 'pointer'"
+    >
+      <div class="level-header">
+        <h2>{{level.title}}</h2>
+        <div class="level-status">
+          <span *ngIf="level.completed" class="status-icon completed">✓</span>
+          <span *ngIf="isLevelLocked(level)" class="status-icon locked">🔒</span>
+          <span *ngIf="!level.completed && !isLevelLocked(level)" class="status-icon available">▶</span>
+        </div>
+      </div>
+      <p class="level-description">{{level.description}}</p>
+      <div class="level-topics">
+        <span *ngFor="let topic of level.topics" class="topic-tag">{{topic}}</span>
+      </div>
+      <div class="level-difficulty">
+        <span class="difficulty-label">Difficulty:</span>
+        <div class="difficulty-indicator" [attr.data-difficulty]="level.difficulty">
+          <div class="difficulty-dots">
+            <span class="dot" [class.active]="level.difficulty === 'easy' || level.difficulty === 'medium' || level.difficulty === 'hard'"></span>
+            <span class="dot" [class.active]="level.difficulty === 'medium' || level.difficulty === 'hard'"></span>
+            <span class="dot" [class.active]="level.difficulty === 'hard'"></span>
+          </div>
+          <span class="difficulty-text">{{level.difficulty}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="achievement-section" *ngIf="getCompletedCount() > 0">
+    <h3>🏆 Your Achievements</h3>
+    <div class="achievements">
+      <div class="achievement" *ngIf="getCompletedCount() >= 1">
+        <span class="achievement-icon">🚀</span>
+        <span class="achievement-text">First Steps</span>
+      </div>
+      <div class="achievement" *ngIf="getCompletedCount() >= 4">
+        <span class="achievement-icon">💪</span>
+        <span class="achievement-text">Half Way There</span>
+      </div>
+      <div class="achievement" *ngIf="getCompletedCount() === 8">
+        <span class="achievement-icon">👑</span>
+        <span class="achievement-text">HTML Master</span>
+      </div>
+    </div>
+  </div>
+</div>

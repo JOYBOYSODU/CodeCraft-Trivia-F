@@ -1,0 +1,157 @@
+<div class="floating-elements">
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <button class="back-btn" routerLink="/beginner">← Back to Levels</button>
+    <h1 class="level-title">Level 3</h1>
+    <p class="level-subtitle">Text Formatting</p>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="explanation-panel">
+      <h2>✨ Making Text Look Amazing</h2>
+      <p>
+        Text formatting tags help make your content more <span class="highlight">interesting</span>
+        and easier to read. Let's learn how to make text bold, italic, underlined, and more!
+      </p>
+      
+      <div class="formatting-showcase">
+        <h3>🎨 Text Formatting Tags</h3>
+        <div class="format-example">
+          <code>&lt;strong&gt;</code> 
+          <span class="result"><strong>Makes text bold and important</strong></span>
+        </div>
+        <div class="format-example">
+          <code>&lt;em&gt;</code> 
+          <span class="result"><em>Makes text italic and emphasized</em></span>
+        </div>
+        <div class="format-example">
+          <code>&lt;u&gt;</code> 
+          <span class="result"><u>Underlines text</u></span>
+        </div>
+        <div class="format-example">
+          <code>&lt;mark&gt;</code> 
+          <span class="result"><mark>Highlights text like a marker</mark></span>
+        </div>
+        <div class="format-example">
+          <code>&lt;br&gt;</code> 
+          <span class="result">Creates a line<br>break (no closing tag needed!)</span>
+        </div>
+      </div>
+
+      <h3>🔧 How to Use Them</h3>
+      <div class="example-code">
+&lt;p&gt;This is &lt;strong&gt;very important&lt;/strong&gt; text!&lt;/p&gt;
+&lt;p&gt;I &lt;em&gt;really love&lt;/em&gt; learning HTML.&lt;/p&gt;
+&lt;p&gt;Don't forget to &lt;u&gt;underline&lt;/u&gt; key points.&lt;/p&gt;
+&lt;p&gt;First line&lt;br&gt;Second line on new row.&lt;/p&gt;
+      </div>
+
+      <div class="combo-example">
+        <h4>🌟 You Can Combine Them!</h4>
+        <p>
+          <code>&lt;strong&gt;&lt;em&gt;Bold and italic!&lt;/em&gt;&lt;/strong&gt;</code><br>
+          Result: <strong><em>Bold and italic!</em></strong>
+        </p>
+      </div>
+
+      <div class="fun-fact">
+        <h4>🎯 Cool Fact!</h4>
+        <p><code>&lt;br&gt;</code> is special - it doesn't need a closing tag because it's just creating a break!</p>
+      </div>
+    </div>
+
+    <div class="coding-section">
+      <div class="terminal-section">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          💻 Code Editor
+        </div>
+        <textarea 
+          class="code-editor" 
+          [(ngModel)]="userCode"
+          (input)="onCodeChange()"
+          placeholder="Practice formatting your text...">{{defaultCode}}</textarea>
+      </div>
+
+      <div class="terminal-section">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          🌐 Live Output
+        </div>
+        <div class="output-display" [innerHTML]="renderedOutput"></div>
+      </div>
+
+      <div class="button-group">
+        <button class="action-btn" (click)="runCode()">▶️ Run Code</button>
+        <button class="action-btn secondary" (click)="resetCode()">🔄 Reset</button>
+        <button class="action-btn secondary" (click)="showHint()">💡 Hint</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="challenge-section">
+    <h3>🎯 Formatting Challenge</h3>
+    <div class="challenge-steps">
+      <div class="step" [class.completed]="checkStepCompleted(1)">
+        <span class="step-number">1</span>
+        <span class="step-text">Use &lt;strong&gt; to make some text bold</span>
+        <span class="step-status">{{checkStepCompleted(1) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(2)">
+        <span class="step-number">2</span>
+        <span class="step-text">Use &lt;em&gt; to make some text italic</span>
+        <span class="step-status">{{checkStepCompleted(2) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(3)">
+        <span class="step-number">3</span>
+        <span class="step-text">Use &lt;u&gt; to underline text</span>
+        <span class="step-status">{{checkStepCompleted(3) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(4)">
+        <span class="step-number">4</span>
+        <span class="step-text">Use &lt;br&gt; to create a line break</span>
+        <span class="step-status">{{checkStepCompleted(4) ? '✅' : '⭕'}}</span>
+      </div>
+      <div class="step" [class.completed]="checkStepCompleted(5)">
+        <span class="step-number">5</span>
+        <span class="step-text">Combine two formatting tags together</span>
+        <span class="step-status">{{checkStepCompleted(5) ? '✅' : '⭕'}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint-box" [class.visible]="showHintBox">
+    <h3>💡 Formatting Tips</h3>
+    <ul>
+      <li>Always close your formatting tags: <code>&lt;strong&gt;text&lt;/strong&gt;</code></li>
+      <li>You can put formatting tags inside paragraphs</li>
+      <li><code>&lt;br&gt;</code> doesn't need a closing tag</li>
+      <li>Try combining: <code>&lt;strong&gt;&lt;em&gt;text&lt;/em&gt;&lt;/strong&gt;</code></li>
+      <li>Make your text tell a story with different formatting!</li>
+    </ul>
+  </div>
+
+  <div class="next-level" *ngIf="isLevelCompleted">
+    <div class="completion-message">
+      <h2>🎉 Fantastic!</h2>
+      <p>You've mastered text formatting! Your text now has style and personality.</p>
+      <button class="action-btn" routerLink="/level/4">Continue to Level 4 ➡️</button>
+    </div>
+  </div>
+</div>
