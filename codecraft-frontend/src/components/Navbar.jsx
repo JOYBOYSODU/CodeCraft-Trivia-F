@@ -44,7 +44,52 @@ export default function Navbar() {
                                             className={`px-3 py-1.5 rounded-input transition-colors duration-200 font-medium
                         ${location.pathname.startsWith(l.to)
                                                     ? "text-primary bg-primary/10"
-                                                    : "text-slate-400 hover:text-white hover:bg-white/5"}`}
+                                                    : "text-slate-600 hover:text-black hover:bg-black/5"}`}
+                                        >
+                                            {l.label}
+                                        </Link>
+                                    ))}
+                                </nav>
+                            )}
+
+                            {(role === "HOST" || role === "COMPANY") && (
+                                <nav className="hidden md:flex items-center gap-1 text-sm">
+                                    {[
+                                        { to: "/host", label: "Dashboard" },
+                                        { to: "/host/contests", label: "Contests" },
+                                        { to: "/host/contests/create", label: "Create Contest" },
+                                        { to: "/host/problems/create", label: "Create Problem" },
+                                    ].map((l) => (
+                                        <Link
+                                            key={l.to}
+                                            to={l.to}
+                                            className={`px-3 py-1.5 rounded-input transition-colors duration-200 font-medium
+                        ${location.pathname.startsWith(l.to)
+                                                    ? "text-primary bg-primary/10"
+                                                    : "text-slate-600 hover:text-black hover:bg-black/5"}`}
+                                        >
+                                            {l.label}
+                                        </Link>
+                                    ))}
+                                </nav>
+                            )}
+
+                            {role === "ADMIN" && (
+                                <nav className="hidden md:flex items-center gap-1 text-sm">
+                                    {[
+                                        { to: "/admin", label: "Dashboard" },
+                                        { to: "/admin/users", label: "Users" },
+                                        { to: "/admin/contests", label: "Contests" },
+                                        { to: "/admin/problems", label: "Problems" },
+                                        { to: "/admin/announcements", label: "Announcements" },
+                                    ].map((l) => (
+                                        <Link
+                                            key={l.to}
+                                            to={l.to}
+                                            className={`px-3 py-1.5 rounded-input transition-colors duration-200 font-medium
+                        ${location.pathname.startsWith(l.to)
+                                                    ? "text-primary bg-primary/10"
+                                                    : "text-slate-600 hover:text-black hover:bg-black/5"}`}
                                         >
                                             {l.label}
                                         </Link>
@@ -64,7 +109,7 @@ export default function Navbar() {
                                         <User size={14} className="text-primary" />
                                     </div>
                                 )}
-                                <span className="hidden sm:block text-sm text-slate-300 font-medium">{user.name}</span>
+                                <span className="hidden sm:block text-sm text-slate-700 font-medium">{user.name}</span>
                                 {user.is_verified && (
                                     <span className="text-secondary text-xs">✓</span>
                                 )}

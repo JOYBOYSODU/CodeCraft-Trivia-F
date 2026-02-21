@@ -9,8 +9,8 @@ export default function Register() {
     const location = useLocation();
     const defaultRole = location.state?.role ?? "PLAYER";
 
-    const [role, setRole] = useState(defaultRole);
-    const [form, setForm] = useState({ name: "", email: "", password: "", company_name: "", type: "", company_size: "" });
+    const [role] = useState(defaultRole);
+    const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [showPw, setShowPw] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -35,9 +35,6 @@ export default function Register() {
         if (!form.email) nextErrors.email = "Email is required";
         if (!form.password) nextErrors.password = "Password is required";
         if (form.password && form.password.length < 8) nextErrors.password = "Password must be at least 8 characters";
-        if ((role === "HOST" || role === "COMPANY") && !form.company_name) nextErrors.company_name = "Company name is required";
-        if ((role === "HOST" || role === "COMPANY") && !form.type) nextErrors.type = "Company type is required";
-        if ((role === "HOST" || role === "COMPANY") && !form.company_size) nextErrors.company_size = "Team size is required";
         return nextErrors;
     };
 
@@ -48,7 +45,7 @@ export default function Register() {
         if (Object.keys(nextErrors).length > 0) return;
         setLoading(true);
         try {
-            await authService.register({ ...form, role });
+            await authService.register({ name: form.name, email: form.email, password: form.password });
             toast.success("Account created! Please sign in.");
             navigate("/login");
         } catch (err) {
@@ -77,21 +74,30 @@ export default function Register() {
 
                 <form onSubmit={handleSubmit} className="card space-y-4">
                     {loading && <div className="skeleton skeleton-line" />}
-                    {/* Role selector */}
+                    <div className="card border-dashed">
+                        <p className="text-sm text-slate-600">
+                            Registration currently supports <span className="font-semibold text-slate-900">Player</span> accounts only.
+                            Host and Admin accounts must be created by an administrator.
+                        </p>
+                    </div>
+
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">I want to</label>
                         <div className="grid grid-cols-3 gap-2">
                             {[
-                                { value: "PLAYER", title: "Player", sub: "Compete in contests" },
-                                { value: "HOST", title: "Host", sub: "Run hiring contests" },
-                                { value: "COMPANY", title: "Company", sub: "Hire with AI" },
-                            ].map(({ value, title, sub }) => (
+                                { value: "PLAYER", title: "Player", sub: "Compete in contests", enabled: true },
+                                { value: "HOST", title: "Host", sub: "Company (under Host)", enabled: false },
+                                { value: "ADMIN", title: "Admin", sub: "Platform management", enabled: false },
+                            ].map(({ value, title, sub, enabled }) => (
                                 <button
-                                    key={value} type="button" onClick={() => setRole(value)}
-                                    className={`p-3 rounded-input border text-left transition-all ${role === value
+                                    key={value}
+                                    type="button"
+                                    disabled={!enabled}
+                                    aria-disabled={!enabled}
+                                    className={`p-3 rounded-input border text-left transition-all ${value === role
                                             ? "border-black bg-yellow-300/40 text-black"
-                                            : "border-slate-300 text-slate-600 hover:border-slate-500"
-                                        }`}
+                                            : "border-slate-300 text-slate-600"
+                                        } ${enabled ? "hover:border-slate-500" : "opacity-50 cursor-not-allowed"}`}
                                 >
                                     <p className="font-semibold text-sm">{title}</p>
                                     <p className="text-xs opacity-70 mt-0.5">{sub}</p>
@@ -136,35 +142,6 @@ export default function Register() {
                         </div>
                     </div>
 
-                    {/* Host extra fields */}
-                    {(role === "HOST" || role === "COMPANY") && (
-                        <>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Company Name</label>
-                                <input value={form.company_name} onChange={(e) => set("company_name", e.target.value)}
-                                    className={`input-field ${errors.company_name ? "input-error" : ""}`} placeholder="Acme Corp" />
-                                {errors.company_name && <p className="form-error">{errors.company_name}</p>}
-                            </div>
-                            <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
-                                    <select value={form.type} onChange={(e) => set("type", e.target.value)} className={`input-field ${errors.type ? "input-error" : ""}`}>
-                                        <option value="">Select</option>
-                                        {["STARTUP", "ENTERPRISE", "MNC", "PRODUCT", "SERVICE"].map((t) => (
-                                            <option key={t} value={t}>{t}</option>
-                                        ))}
-                                    </select>
-                                    {errors.type && <p className="form-error">{errors.type}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Team Size</label>
-                                    <input value={form.company_size} onChange={(e) => set("company_size", e.target.value)}
-                                        className={`input-field ${errors.company_size ? "input-error" : ""}`} placeholder="50" />
-                                    {errors.company_size && <p className="form-error">{errors.company_size}</p>}
-                                </div>
-                            </div>
-                        </>
-                    )}
 
                     <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 py-2.5">
                         {loading
