@@ -4,7 +4,6 @@ import { useAuth } from "../../context/AuthContext";
 import { playerService } from "../../services/playerService";
 import { contestService } from "../../services/contestService";
 import { submissionService } from "../../services/submissionService";
-import Loader from "../../components/Loader";
 import { Code, Trophy, Flame, Star, ChevronRight, Clock, Users, Swords } from "lucide-react";
 
 function XPBar({ xp, xpToNext }) {
@@ -53,7 +52,66 @@ export default function Dashboard() {
         }).catch(() => { }).finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <Loader text="Loading dashboard..." />;
+    if (loading) {
+        return (
+            <div className="space-y-6">
+                <div className="card space-y-4">
+                    <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-2 w-full">
+                            <div className="skeleton skeleton-line" style={{ width: "60%" }} />
+                            <div className="skeleton skeleton-line" style={{ width: "40%" }} />
+                        </div>
+                        <div className="skeleton" style={{ width: "92px", height: "32px" }} />
+                    </div>
+                    <div className="skeleton" style={{ width: "100%", height: "10px" }} />
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={`stat-skeleton-${i}`} className="card">
+                            <div className="skeleton skeleton-block" />
+                        </div>
+                    ))}
+                </div>
+
+                <div className="card">
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="skeleton skeleton-line" style={{ width: "40%" }} />
+                        <div className="skeleton skeleton-line" style={{ width: "20%" }} />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <div key={`diff-skeleton-${i}`} className="space-y-2">
+                                <div className="skeleton skeleton-line" />
+                                <div className="skeleton skeleton-line" style={{ width: "60%" }} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="card space-y-3">
+                    <div className="flex items-center justify-between">
+                        <div className="skeleton skeleton-line" style={{ width: "35%" }} />
+                        <div className="skeleton skeleton-line" style={{ width: "18%" }} />
+                    </div>
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={`contest-skeleton-${i}`} className="skeleton" style={{ height: "52px", width: "100%" }} />
+                    ))}
+                    <div className="skeleton" style={{ height: "40px", width: "100%" }} />
+                </div>
+
+                <div className="card space-y-3">
+                    <div className="flex items-center justify-between">
+                        <div className="skeleton skeleton-line" style={{ width: "35%" }} />
+                        <div className="skeleton skeleton-line" style={{ width: "18%" }} />
+                    </div>
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={`recent-skeleton-${i}`} className="skeleton" style={{ height: "44px", width: "100%" }} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     const tier = player?.tier ?? "BRONZE";
     const tierCls = { BRONZE: "tier-bronze", SILVER: "tier-silver", GOLD: "tier-gold" }[tier] ?? "badge-primary";

@@ -22,7 +22,7 @@ export default function Landing() {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen" style={{ background: "#0F172A" }}>
+        <div className="min-h-screen bg-bg">
             {/* Navbar */}
             <header className="hero-nav">
                 <nav className="hero-nav__inner">

@@ -74,7 +74,7 @@ export default function AppRoutes() {
                 </Route>
 
                 {/* Host routes: guard → layout → pages */}
-                <Route element={<ProtectedRoute allowedRoles={["HOST"]} />}>
+                <Route element={<ProtectedRoute allowedRoles={["HOST", "COMPANY"]} />}>
                     <Route element={<HostLayout />}>
                         <Route path="/host" element={<HostDashboard />} />
                         <Route path="/host/problems/create" element={<HostCreateProblem />} />

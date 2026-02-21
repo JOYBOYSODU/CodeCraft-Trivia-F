@@ -11,22 +11,37 @@ export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
     const [showPw, setShowPw] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [remember, setRemember] = useState(true);
+    const [errors, setErrors] = useState({});
 
-    const set = (f, v) => setForm((p) => ({ ...p, [f]: v }));
+    const set = (f, v) => {
+        setForm((p) => ({ ...p, [f]: v }));
+        setErrors((prev) => ({ ...prev, [f]: undefined, form: undefined }));
+    };
+
+    const validate = () => {
+        const nextErrors = {};
+        if (!form.email) nextErrors.email = "Email is required";
+        if (!form.password) nextErrors.password = "Password is required";
+        return nextErrors;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.email || !form.password) { toast.error("Please fill in all fields"); return; }
+        const nextErrors = validate();
+        setErrors(nextErrors);
+        if (Object.keys(nextErrors).length > 0) return;
         setLoading(true);
         try {
             const res = await authService.login(form);
             const { token, user } = res.data;
-            login(token, user);
+            login(token, user, { remember });
             toast.success("Welcome back!");
-            const dest = { ADMIN: "/admin", HOST: "/host", PLAYER: "/dashboard" }[user.role] ?? "/dashboard";
+            const dest = { ADMIN: "/admin", HOST: "/host", COMPANY: "/host", PLAYER: "/dashboard" }[user.role] ?? "/dashboard";
             navigate(dest, { replace: true });
         } catch (err) {
             const msg = err.response?.data?.message ?? "Login failed";
+            setErrors({ form: msg });
             if (msg.toLowerCase().includes("banned")) toast.error("Account banned. Contact support.");
             else if (msg.toLowerCase().includes("suspended")) toast.error("Account suspended. Contact support.");
             else toast.error(msg);
@@ -36,41 +51,56 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "#0F172A" }}>
+        <div className="min-h-screen flex items-center justify-center px-4 bg-bg">
             <div className="w-full max-w-sm space-y-6">
                 {/* Logo */}
                 <div className="text-center">
                     <Link to="/" className="inline-flex items-center gap-2 mb-4">
-                        <Code2 className="text-indigo-400" size={24} />
-                        <span className="font-mono font-bold text-xl bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                        <Code2 className="text-primary" size={24} />
+                        <span className="font-mono font-bold text-xl text-gradient">
                             CodeCraft
                         </span>
                     </Link>
-                    <p className="text-slate-400 text-sm">Sign in to your account</p>
+                    <p className="text-slate-600 text-sm">Sign in to your account</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="card space-y-4">
+                    {loading && <div className="skeleton skeleton-line" />}
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
                         <input
                             type="email" value={form.email} onChange={(e) => set("email", e.target.value)}
-                            className="input-field" placeholder="you@example.com" autoComplete="email"
+                            className={`input-field ${errors.email ? "input-error" : ""}`}
+                            placeholder="you@example.com" autoComplete="email"
                         />
+                        {errors.email && <p className="form-error">{errors.email}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
                         <div className="relative">
                             <input
                                 type={showPw ? "text" : "password"} value={form.password}
                                 onChange={(e) => set("password", e.target.value)}
-                                className="input-field pr-10" placeholder="••••••••" autoComplete="current-password"
+                                className={`input-field pr-10 ${errors.password ? "input-error" : ""}`}
+                                placeholder="••••••••" autoComplete="current-password"
                             />
                             <button type="button" onClick={() => setShowPw(!showPw)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900">
                                 {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
                             </button>
                         </div>
+                        {errors.password && <p className="form-error">{errors.password}</p>}
                     </div>
+
+                    <label className="flex items-center gap-2 text-xs text-slate-600">
+                        <input
+                            type="checkbox"
+                            checked={remember}
+                            onChange={(e) => setRemember(e.target.checked)}
+                            className="accent-black"
+                        />
+                        Remember me
+                    </label>
 
                     <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 py-2.5">
                         {loading
@@ -79,14 +109,16 @@ export default function Login() {
                         Sign In
                     </button>
 
-                    <p className="text-center text-sm text-slate-500">
+                    {errors.form && <p className="form-error text-center">{errors.form}</p>}
+
+                    <p className="text-center text-sm text-slate-600">
                         Don&apos;t have an account?{" "}
-                        <Link to="/register" className="text-indigo-400 hover:underline font-medium">Create one</Link>
+                        <Link to="/register" className="text-slate-900 hover:underline font-medium">Create one</Link>
                     </p>
                 </form>
 
                 <p className="text-center text-xs text-slate-600">
-                    <Link to="/" className="hover:text-slate-400 transition-colors">← Back to home</Link>
+                    <Link to="/" className="hover:text-slate-900 transition-colors">← Back to home</Link>
                 </p>
             </div>
         </div>

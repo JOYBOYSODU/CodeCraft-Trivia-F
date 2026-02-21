@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { problemService } from "../../services/problemService";
 import { submissionService } from "../../services/submissionService";
-import Loader from "../../components/Loader";
 import { Search, CheckCircle } from "lucide-react";
 
 const DIFFICULTIES = ["ALL", "EASY", "MEDIUM", "HARD"];
@@ -88,7 +87,34 @@ export default function Practice() {
             </div>
 
             {/* Table */}
-            {loading ? <Loader /> : (
+            {loading ? (
+                <div className="card overflow-hidden p-0">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="border-b border-border">
+                                <th className="table-header w-8">#</th>
+                                <th className="table-header">Title</th>
+                                <th className="table-header">Difficulty</th>
+                                <th className="table-header text-right hidden md:table-cell">Points</th>
+                                <th className="table-header hidden lg:table-cell">Tags</th>
+                                <th className="table-header text-right w-16">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Array.from({ length: 8 }).map((_, i) => (
+                                <tr key={`practice-skeleton-${i}`} className="table-row">
+                                    <td className="table-cell"><div className="skeleton" style={{ height: "12px", width: "18px" }} /></td>
+                                    <td className="table-cell"><div className="skeleton" style={{ height: "12px", width: "70%" }} /></td>
+                                    <td className="table-cell"><div className="skeleton" style={{ height: "12px", width: "60px" }} /></td>
+                                    <td className="table-cell text-right hidden md:table-cell"><div className="skeleton" style={{ height: "12px", width: "30px", marginLeft: "auto" }} /></td>
+                                    <td className="table-cell hidden lg:table-cell"><div className="skeleton" style={{ height: "12px", width: "90px" }} /></td>
+                                    <td className="table-cell text-right"><div className="skeleton" style={{ height: "12px", width: "20px", marginLeft: "auto" }} /></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
                 <>
                     <div className="card overflow-hidden p-0">
                         <table className="w-full">

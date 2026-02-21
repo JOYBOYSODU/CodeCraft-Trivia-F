@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { contestService } from "../../services/contestService";
-import Loader from "../../components/Loader";
 import toast from "react-hot-toast";
 import { Trophy, Users, Clock, Building2, Briefcase, Lock, ChevronRight, Search } from "lucide-react";
 
@@ -153,7 +152,18 @@ export default function Contests() {
                 ))}
             </div>
 
-            {loading ? <Loader /> : (
+            {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={`contest-skeleton-${i}`} className="card space-y-3">
+                            <div className="skeleton skeleton-line" style={{ width: "60%" }} />
+                            <div className="skeleton" style={{ height: "14px", width: "85%" }} />
+                            <div className="skeleton" style={{ height: "14px", width: "70%" }} />
+                            <div className="skeleton" style={{ height: "32px", width: "100%" }} />
+                        </div>
+                    ))}
+                </div>
+            ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {contests.length === 0 ? (
                         <div className="col-span-full text-center py-16 text-slate-500 card">
