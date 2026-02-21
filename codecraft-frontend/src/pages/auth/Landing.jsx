@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Code2, Swords, Trophy, ChevronRight, Zap, Shield, Users, Briefcase } from "lucide-react";
+import DecryptedText from "../../components/DecryptedText";
+import CardSwap, { Card } from "../../components/CardSwap";
 
 const features = [
     { icon: Swords, title: "Real-Time Contests", desc: "Compete live against thousands of developers with millisecond-precision judging." },
@@ -22,55 +24,130 @@ export default function Landing() {
     return (
         <div className="min-h-screen" style={{ background: "#0F172A" }}>
             {/* Navbar */}
-            <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm">
-                <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 h-14">
-                    <Link to="/" className="flex items-center gap-2">
-                        <Code2 className="text-indigo-400" size={22} />
-                        <span className="font-mono font-bold text-lg bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                            CodeCraft
-                        </span>
+            <header className="hero-nav">
+                <nav className="hero-nav__inner">
+                    <Link to="/" className="hero-brand">
+                        <Code2 size={20} className="hero-brand__icon" />
+                        <span className="hero-brand__text">CodeCraft</span>
                     </Link>
-                    <div className="flex items-center gap-2">
-                        <Link to="/login" className="btn-secondary text-sm px-4 py-1.5">Log In</Link>
-                        <Link to="/register" className="btn-primary  text-sm px-4 py-1.5">Sign Up Free</Link>
+                    <div className="hero-nav__links">
+                        <a href="#features">Product</a>
+                        <a href="#features">Solutions</a>
+                        <a href="#features">Developers</a>
+                        <a href="#features">Resources</a>
+                        <a href="#features">Company</a>
+                        <a href="#features">Blog</a>
+                        <a href="#features">Pricing</a>
+                    </div>
+                    <div className="hero-nav__actions">
+                        <button
+                            onClick={() => navigate("/register", { state: { role: "HOST" } })}
+                            className="hero-btn hero-btn--ghost"
+                        >
+                            Contact Sales
+                        </button>
+                        <button
+                            onClick={() => navigate("/register", { state: { role: "PLAYER" } })}
+                            className="hero-btn hero-btn--solid"
+                        >
+                            Sign Up
+                        </button>
                     </div>
                 </nav>
             </header>
 
             {/* Hero */}
-            <section className="max-w-4xl mx-auto px-4 pt-24 pb-16 text-center">
-                <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-4 py-1.5 text-indigo-300 text-xs font-semibold mb-6">
-                    <Zap size={12} /> Real-time competitive coding + hiring
+            <section className="hero-shell">
+                <div className="hero-split">
+                    <div className="hero-split__left">
+                        <div className="hero-pill">
+                            <span className="hero-pill__bracket">[</span>
+                            <span className="hero-pill__text">AI-FIRST HIRING SIGNALS</span>
+                            <span className="hero-pill__bracket">]</span>
+                            <span className="hero-pill__icon" aria-hidden="true" />
+                        </div>
+                        <h1 className="hero-title">
+                            <DecryptedText
+                                text="Build contest agents for engineering hiring"
+                                animateOn="view"
+                                revealDirection="start"
+                                sequential
+                                speed={45}
+                                maxIterations={14}
+                                className="hero-title"
+                                parentClassName="hero-title"
+                                encryptedClassName="hero-ai__encrypted"
+                            />
+                        </h1>
+                        <p className="hero-copy">
+                            CodeCraft helps hiring teams parse submissions, track live leaderboards,
+                            and validate skills faster, reducing time-to-hire without sacrificing rigor.
+                        </p>
+                        <div className="hero-cta">
+                            <button
+                                onClick={() => navigate("/register", { state: { role: "HOST" } })}
+                                className="hero-btn hero-btn--ghost"
+                            >
+                                Contact Sales
+                            </button>
+                            <button
+                                onClick={() => navigate("/register", { state: { role: "PLAYER" } })}
+                                className="hero-btn hero-btn--solid"
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                        <div className="hero-ai">
+                            <div className="hero-ai__label">AI-BASED SIGNALS</div>
+                            <DecryptedText
+                                text="Detect true skill with live contest telemetry."
+                                animateOn="view"
+                                revealDirection="start"
+                                sequential
+                                speed={40}
+                                maxIterations={12}
+                                className="hero-ai__text"
+                                parentClassName="hero-ai__line"
+                                encryptedClassName="hero-ai__encrypted"
+                            />
+                        </div>
+                        <p className="hero-subtle">
+                            Already have an account?{" "}
+                            <Link to="/login" className="hero-link">Sign in</Link>
+                        </p>
+                    </div>
+                    <div className="hero-split__right">
+                        <div className="hero-card-stack">
+                            <CardSwap cardDistance={60} verticalDistance={70} delay={5000} pauseOnHover={false}>
+                                <Card>
+                                    <div className="card-window-tag">AI SIGNALS</div>
+                                    <h3 className="card-window-title">Skill verification</h3>
+                                    <p className="card-window-copy">
+                                        Model scored rubrics detect algorithmic depth, not just speed.
+                                    </p>
+                                </Card>
+                                <Card>
+                                    <div className="card-window-tag">LIVE INSIGHTS</div>
+                                    <h3 className="card-window-title">Real-time telemetry</h3>
+                                    <p className="card-window-copy">
+                                        Track attempts, solve paths, and collaboration signals in-flight.
+                                    </p>
+                                </Card>
+                                <Card>
+                                    <div className="card-window-tag">SAFE HIRING</div>
+                                    <h3 className="card-window-title">Fraud detection</h3>
+                                    <p className="card-window-copy">
+                                        Pattern analysis flags anomalies and keeps evaluations fair.
+                                    </p>
+                                </Card>
+                            </CardSwap>
+                        </div>
+                    </div>
                 </div>
-                <h1 className="text-5xl font-mono font-bold text-white mb-5 leading-tight">
-                    Code.{" "}
-                    <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                        Compete.
-                    </span>{" "}
-                    Get Hired.
-                </h1>
-                <p className="text-slate-400 text-lg mb-8 max-w-2xl mx-auto">
-                    The all-in-one platform where developers race to solve problems, companies find talent through live contests, and every submission makes your rank climb.
-                </p>
-                <div className="flex items-center justify-center gap-3 flex-wrap">
-                    <button onClick={() => navigate("/register", { state: { role: "PLAYER" } })}
-                        className="btn-primary flex items-center gap-2 px-6 py-2.5 text-base">
-                        Start Competing <ChevronRight size={16} />
-                    </button>
-                    <button onClick={() => navigate("/register", { state: { role: "HOST" } })}
-                        className="btn-secondary flex items-center gap-2 px-6 py-2.5 text-base">
-                        Host a Contest <Briefcase size={15} />
-                    </button>
-                </div>
-                {/* Already have account */}
-                <p className="mt-5 text-sm text-slate-500">
-                    Already have an account?{" "}
-                    <Link to="/login" className="text-indigo-400 hover:underline font-medium">Sign in</Link>
-                </p>
             </section>
 
             {/* Features grid */}
-            <section className="max-w-6xl mx-auto px-4 pb-16">
+            <section id="features" className="max-w-6xl mx-auto px-4 pb-16">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-mono font-bold text-white mb-2">
                         Everything you need to <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">level up</span>

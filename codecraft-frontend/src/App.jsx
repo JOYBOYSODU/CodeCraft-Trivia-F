@@ -27,9 +27,9 @@ export default function App() {
     <ErrorBoundary>
       <AuthProvider>
         <Toaster position="top-right" toastOptions={{
-          style: { background: "#1E293B", color: "#F1F5F9", border: "1px solid #334155", fontFamily: "'Inter', sans-serif", fontSize: "13px" },
-          success: { iconTheme: { primary: "#10B981", secondary: "#1E293B" } },
-          error: { iconTheme: { primary: "#EF4444", secondary: "#1E293B" } },
+          style: { background: "#FFFFFF", color: "#0B0B0B", border: "1px solid #0B0B0B", fontFamily: "'Inter', sans-serif", fontSize: "13px" },
+          success: { iconTheme: { primary: "#16A34A", secondary: "#FFFFFF" } },
+          error: { iconTheme: { primary: "#DC2626", secondary: "#FFFFFF" } },
         }} />
         <Suspense fallback={<Loader fullscreen text="Loading..." />}>
           <AppRoutes />
