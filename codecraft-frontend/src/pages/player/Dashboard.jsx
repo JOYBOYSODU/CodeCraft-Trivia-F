@@ -47,7 +47,7 @@ export default function Dashboard() {
             submissionService.getSubmissions({ limit: 5 }),
         ]).then(([pRes, cRes, sRes]) => {
             setPlayer(pRes.data);
-            setContests(cRes.data?.content ?? cRes.data ?? []);
+            setContests(cRes.data?.contests || cRes.data?.content || (Array.isArray(cRes.data) ? cRes.data : []));
             setRecent(sRes.data?.content ?? sRes.data ?? []);
         }).catch(() => { }).finally(() => setLoading(false));
     }, []);
@@ -145,7 +145,9 @@ export default function Dashboard() {
                     { icon: Trophy, label: "Contest Wins", val: player?.total_wins ?? 0, color: "text-yellow-400", to: "/contests" },
                     { icon: Flame, label: "Streak Days", val: player?.streak_days ?? 0, color: "text-orange-400", to: null },
                     { icon: Star, label: "Global Rank", val: `#${player?.rank ?? "—"}`, color: "text-indigo-400", to: "/practice" },
-                ].map(({ icon: Icon, label, val, color, to }) => {
+                ].map((item) => {
+                    const Icon = item.icon;
+                    const { label, val, color, to } = item;
                     const content = (
                         <>
                             <Icon size={18} className={`mx-auto mb-1 ${color}`} />

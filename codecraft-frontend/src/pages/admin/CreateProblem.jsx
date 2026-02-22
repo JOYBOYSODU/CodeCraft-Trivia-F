@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { problemService } from '../../services/problemService';
 import { parseError } from '../../utils/errorHandler';
 import ErrorModal from '../../components/ErrorModal';
@@ -85,7 +85,7 @@ export default function CreateProblem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title.trim()) {
       toast.error('Title is required');
       return;
@@ -106,7 +106,7 @@ export default function CreateProblem() {
       const result = await problemService.createProblem(formData);
       const problemId = result.data?.id || result.data?.problemId || result.id || result.problemId;
       toast.success(problemId ? `Problem created successfully! ID: ${problemId}` : 'Problem created successfully!');
-      
+
       // Reset form
       setFormData({
         title: '',
@@ -145,11 +145,11 @@ export default function CreateProblem() {
         {modalError && <ErrorModal error={modalError} onDismiss={() => setModalError(null)} />}
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          
+
           {/* Basic Information */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">📝 Basic Information</legend>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Title *</label>
@@ -230,7 +230,7 @@ export default function CreateProblem() {
           {/* Tags & Constraints */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">🏷️ Tags & Constraints</legend>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Tags</label>
@@ -324,7 +324,7 @@ export default function CreateProblem() {
           {/* Examples */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">📌 Examples</legend>
-            
+
             {[1, 2, 3].map(num => (
               <div key={num} className="mb-4">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Example {num}</label>
@@ -343,7 +343,7 @@ export default function CreateProblem() {
           {/* Starter Code */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">💻 Starter Code (by Language)</legend>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Python Starter</label>
@@ -398,7 +398,7 @@ export default function CreateProblem() {
           {/* Test Cases */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">✓ Test Cases *</legend>
-            
+
             {formData.test_cases.map((tc, i) => (
               <div key={i} className="mb-6 p-4 border border-slate-300 rounded-lg bg-slate-50">
                 <div className="flex justify-between items-center mb-4">
@@ -411,7 +411,7 @@ export default function CreateProblem() {
                     <Trash2 size={16} />
                   </button>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-2">Input</label>
@@ -447,7 +447,7 @@ export default function CreateProblem() {
                 </label>
               </div>
             ))}
-            
+
             <button
               type="button"
               onClick={addTestCase}
@@ -460,7 +460,7 @@ export default function CreateProblem() {
           {/* Solution & Metadata */}
           <fieldset className="border-b-2 border-slate-200 pb-8">
             <legend className="text-xl font-bold text-slate-900 mb-6">🔐 Solution & Metadata</legend>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Reference Solution</label>

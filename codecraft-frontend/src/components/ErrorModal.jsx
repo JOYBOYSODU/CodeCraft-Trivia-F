@@ -4,23 +4,7 @@ import { AlertCircle, X } from 'lucide-react';
 const ErrorModal = ({ error, onClose }) => {
   if (!error) return null;
 
-  const getErrorIcon = (status) => {
-    switch (status) {
-      case 401:
-      case 403:
-        return '🔐';
-      case 409:
-        return '⚠️';
-      case 404:
-        return '❌';
-      case 400:
-        return '📝';
-      case 500:
-        return '🔥';
-      default:
-        return '⚠️';
-    }
-  };
+
 
   const getErrorTitle = (status, message) => {
     if (message) return message;
@@ -46,7 +30,7 @@ const ErrorModal = ({ error, onClose }) => {
     if (message && message !== getErrorTitle(status, message)) {
       return message;
     }
-    
+
     switch (status) {
       case 400:
         return 'Please check your input and try again.';

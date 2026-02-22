@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Code2, Swords, Trophy, Shield, Users, Briefcase, ArrowRight, Zap, Star, ChevronRight } from "lucide-react";
 import DecryptedText from "../../components/DecryptedText";
 import CardSwap, { Card } from "../../components/CardSwap";
@@ -180,35 +180,7 @@ const features = [
     },
 ];
 
-const tiers = [
-    {
-        tier: "BRONZE",
-        range: "0 – 999 XP",
-        color: "#8B4A0A",
-        bg: "rgba(205,127,50,0.10)",
-        border: "rgba(180,100,40,0.35)",
-        glow: "rgba(205,127,50,0.15)",
-        icon: "🥉",
-    },
-    {
-        tier: "SILVER",
-        range: "1000 – 2999 XP",
-        color: "#3B3B3B",
-        bg: "rgba(130,130,130,0.08)",
-        border: "rgba(100,100,100,0.30)",
-        glow: "rgba(130,130,130,0.12)",
-        icon: "🥈",
-    },
-    {
-        tier: "GOLD",
-        range: "3000+ XP",
-        color: "#6B5000",
-        bg: "rgba(247,232,0,0.14)",
-        border: "rgba(200,165,0,0.45)",
-        glow: "rgba(247,232,0,0.20)",
-        icon: "🥇",
-    },
-];
+
 
 const stats = [
     { value: 50, suffix: "K+", label: "Developers", decimals: 0 },
@@ -218,7 +190,7 @@ const stats = [
 ];
 
 export default function Landing() {
-    const navigate = useNavigate();
+
 
     return (
         <div className="no-scrollbar" style={{ minHeight: "100vh", background: "#F8F7F2", fontFamily: "'Inter', sans-serif", overflowX: "hidden", maxWidth: "100%", margin: "0 auto" }}>
@@ -342,52 +314,57 @@ export default function Landing() {
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
-                    {features.map(({ icon: Icon, tag, title, desc }) => (
-                        <div key={title}
-                            style={{
-                                background: "#FFFFFF",
-                                border: "1.5px solid rgba(11,11,11,0.12)",
-                                borderRadius: "12px",
-                                padding: "1.5rem",
-                                transition: "border-color 200ms, box-shadow 200ms, transform 200ms",
-                                cursor: "default",
-                                position: "relative",
-                                overflow: "hidden",
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.borderColor = "#0B0B0B";
-                                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.10)";
-                                e.currentTarget.style.transform = "translateY(-2px)";
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.borderColor = "rgba(11,11,11,0.12)";
-                                e.currentTarget.style.boxShadow = "none";
-                                e.currentTarget.style.transform = "translateY(0)";
-                            }}>
-                            {/* Yellow accent line top */}
-                            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "#F7E800" }} />
+                    {features.map((item) => {
+                        const { icon: Icon, tag, title, desc } = item;
 
-                            {/* Tag */}
-                            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: "rgba(11,11,11,0.06)", borderRadius: "4px", padding: "0.15rem 0.5rem", marginBottom: "1rem", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6B7280" }}>
-                                {tag}
-                            </div>
+                        const I = Icon;
+                        return (
+                            <div key={title}
+                                style={{
+                                    background: "#FFFFFF",
+                                    border: "1.5px solid rgba(11,11,11,0.12)",
+                                    borderRadius: "12px",
+                                    padding: "1.5rem",
+                                    transition: "border-color 200ms, box-shadow 200ms, transform 200ms",
+                                    cursor: "default",
+                                    position: "relative",
+                                    overflow: "hidden",
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.borderColor = "#0B0B0B";
+                                    e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.10)";
+                                    e.currentTarget.style.transform = "translateY(-2px)";
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.borderColor = "rgba(11,11,11,0.12)";
+                                    e.currentTarget.style.boxShadow = "none";
+                                    e.currentTarget.style.transform = "translateY(0)";
+                                }}>
+                                {/* Yellow accent line top */}
+                                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "#F7E800" }} />
 
-                            {/* Icon */}
-                            <div style={{ width: 44, height: 44, borderRadius: "10px", background: "#F7E800", border: "1.5px solid rgba(11,11,11,0.12)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
-                                <Icon size={20} color="#0B0B0B" strokeWidth={1.8} />
-                            </div>
+                                {/* Tag */}
+                                <div style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: "rgba(11,11,11,0.06)", borderRadius: "4px", padding: "0.15rem 0.5rem", marginBottom: "1rem", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6B7280" }}>
+                                    {tag}
+                                </div>
 
-                            <h3 style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.95rem", fontWeight: 700, color: "#0B0B0B", margin: "0 0 0.5rem", lineHeight: 1.3 }}>
-                                {title}
-                            </h3>
-                            <p style={{ color: "#4B5563", fontSize: "0.875rem", margin: "0 0 1rem", lineHeight: 1.65 }}>
-                                {desc}
-                            </p>
-                            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", fontWeight: 600, color: "#0B0B0B", borderBottom: "1.5px solid #0B0B0B", paddingBottom: "1px" }}>
-                                Learn more <ArrowRight size={11} />
+                                {/* Icon */}
+                                <div style={{ width: 44, height: 44, borderRadius: "10px", background: "#F7E800", border: "1.5px solid rgba(11,11,11,0.12)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
+                                    <I size={20} color="#0B0B0B" strokeWidth={1.8} />
+                                </div>
+
+                                <h3 style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.95rem", fontWeight: 700, color: "#0B0B0B", margin: "0 0 0.5rem", lineHeight: 1.3 }}>
+                                    {title}
+                                </h3>
+                                <p style={{ color: "#4B5563", fontSize: "0.875rem", margin: "0 0 1rem", lineHeight: 1.65 }}>
+                                    {desc}
+                                </p>
+                                <div style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", fontSize: "0.75rem", fontWeight: 600, color: "#0B0B0B", borderBottom: "1.5px solid #0B0B0B", paddingBottom: "1px" }}>
+                                    Learn more <ArrowRight size={11} />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </section>
 

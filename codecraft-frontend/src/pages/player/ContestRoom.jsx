@@ -26,7 +26,7 @@ export default function ContestRoom() {
     const isLive = contest?.status === "LIVE";
 
     // WebSocket connection with live event handlers
-    const { status: wsStatus, isConnected } = useContestWebSocket(id, {
+    const { status: wsStatus } = useContestWebSocket(id, {
         // Live leaderboard updates
         onLeaderboardUpdate: (data) => {
             if (!contest?.leaderboard_frozen) {
@@ -60,7 +60,7 @@ export default function ContestRoom() {
 
         // Level-up notifications
         onLevelUp: (data) => {
-            const { newTier, xpGained, totalXP } = data;
+            const { newTier, xpGained } = data;
             toast.success(
                 <div className="flex items-center gap-2">
                     <Sparkles size={20} className="text-yellow-400" />
@@ -75,7 +75,7 @@ export default function ContestRoom() {
 
         // Achievement unlock notifications
         onAchievement: (data) => {
-            const { title, description, badge } = data;
+            const { title } = data;
             toast.success(
                 <div className="flex items-center gap-2">
                     <Award size={20} className="text-green-400" />
@@ -113,7 +113,7 @@ export default function ContestRoom() {
             setProblems(cRes.data?.problems ?? []);
             setSubmissions(sRes.data?.content ?? sRes.data ?? []);
             setLeaderboard(lRes.data ?? []);
-        } catch (error) {
+        } catch {
             // Don't show error toast, just set contest to null
             // This will trigger the "No contest available" message
             setContest(null);
@@ -184,13 +184,14 @@ export default function ContestRoom() {
 
             {/* Tabs */}
             <div className="border-b border-border flex gap-0">
+                {/* eslint-disable-next-line no-unused-vars */}
                 {TABS.map(({ key, label, icon: Icon }) => (
                     <button
                         key={key}
                         onClick={() => setActiveTab(key)}
                         className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium transition-colors duration-150 border-b-2 ${activeTab === key
-                                ? "border-primary text-primary"
-                                : "border-transparent text-slate-400 hover:text-white"
+                            ? "border-primary text-primary"
+                            : "border-transparent text-slate-400 hover:text-white"
                             }`}
                     >
                         <Icon size={14} />

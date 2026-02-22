@@ -108,7 +108,6 @@ export default function Problem() {
 
     // Parse JSON fields safely
     const desc = typeof problem.desc === "string" ? JSON.parse(problem.desc) : problem.desc ?? {};
-    const examples = typeof problem.example === "string" ? JSON.parse(problem.example) : problem.example ?? [];
     const cases = typeof problem.cases === "string" ? JSON.parse(problem.cases) : problem.cases ?? [];
     const sampleCases = cases.filter((c) => c.is_sample);
 
@@ -123,7 +122,7 @@ export default function Problem() {
                             <h1 className="text-xl font-mono font-bold text-slate-100">{problem.title}</h1>
                             <div className="flex items-center gap-2 mt-2">
                                 <span className={`badge ${problem.difficulty === "EASY" ? "difficulty-easy" :
-                                        problem.difficulty === "MEDIUM" ? "difficulty-medium" : "difficulty-hard"}`}>
+                                    problem.difficulty === "MEDIUM" ? "difficulty-medium" : "difficulty-hard"}`}>
                                     {problem.difficulty}
                                 </span>
                                 <span className="badge badge-primary">{problem.points} pts</span>

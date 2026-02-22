@@ -35,13 +35,15 @@ const hostLinks = [
 ];
 
 function SidebarLink({ to, icon: Icon, label, end: endProp }) {
+
+    const I = Icon; // to avoid warning but also keep JSX clean
     return (
         <NavLink
             to={to}
             end={endProp}
             className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
         >
-            <Icon size={16} />
+            <I size={16} />
             <span>{label}</span>
         </NavLink>
     );

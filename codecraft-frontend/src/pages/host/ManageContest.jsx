@@ -17,13 +17,14 @@ export default function ManageContest() {
 
     useEffect(() => {
         hostService.getContests()
-            .then((r) => setContests(r.data?.content ?? r.data ?? []))
+            .then((r) => setContests(r.data?.contests || r.data?.content || (Array.isArray(r.data) ? r.data : [])))
             .catch(() => { })
             .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
         if (!selected) return;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoadingPart(true);
         Promise.all([
             contestService.getContest(selected),
@@ -116,8 +117,8 @@ export default function ManageContest() {
                                                         <button
                                                             onClick={() => toggleShortlist(p)}
                                                             className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-input border transition-colors ml-auto ${isShortlisted
-                                                                    ? "border-success/40 bg-success/10 text-success hover:bg-success/20"
-                                                                    : "border-border text-slate-400 hover:border-slate-500 hover:text-white"
+                                                                ? "border-success/40 bg-success/10 text-success hover:bg-success/20"
+                                                                : "border-border text-slate-400 hover:border-slate-500 hover:text-white"
                                                                 }`}
                                                         >
                                                             {isShortlisted ? <><CheckCircle size={11} /> Shortlisted</> : <><XCircle size={11} /> Shortlist</>}

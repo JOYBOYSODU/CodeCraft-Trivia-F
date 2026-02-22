@@ -129,7 +129,9 @@ export default function Profile() {
                     { icon: Trophy, label: "Contest Wins", val: player?.total_wins ?? 0, color: "#0B0B0B", bg: "#FFF3A6", to: "/contests" },
                     { icon: Flame, label: "Streak", val: `${player?.streak_days ?? 0}d`, color: "#0B0B0B", bg: "#FFF0E6", to: null },
                     { icon: Star, label: "Contests", val: player?.total_contests ?? 0, color: "#0B0B0B", bg: "#F0F0F0", to: "/contests" },
-                ].map(({ icon: Icon, label, val, color, bg, to }) => {
+                ].map((item) => {
+                    const Icon = item.icon;
+                    const { label, val, color, bg, to } = item;
                     const inner = (
                         <div style={{ textAlign: "center", padding: "0.25rem 0" }}>
                             <div style={{

@@ -51,6 +51,7 @@ export default function Practice() {
     useEffect(() => {
         const timer = setTimeout(() => load(0), 350);
         return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, difficulty, pageSize]);
 
     // Load solved set once

@@ -59,9 +59,8 @@ function ContestCard({
   return (
     <Link
       to={`/contests/${contest.id}`}
-      className={`card contest-card hover:border-indigo-500/40 transition-all duration-200 space-y-3 flex flex-col group ${
-        contest.status === "ENDED" ? "opacity-75" : ""
-      }`}
+      className={`card contest-card hover:border-indigo-500/40 transition-all duration-200 space-y-3 flex flex-col group ${contest.status === "ENDED" ? "opacity-75" : ""
+        }`}
     >
       {isHiring && <div className="contest-ribbon">Hiring</div>}
 
@@ -208,16 +207,21 @@ export default function Contests() {
   const [inviteCodes, setInviteCodes] = useState({});
 
   useEffect(() => {
-    setLoading(true);
-    const params = filter !== "ALL" ? { status: filter } : {};
-    contestService
-      .getContests(params)
-      .then((res) => setContests(res.data?.content ?? res.data ?? []))
-      .catch(() => {
-        // Handle error silently - empty state will show "No contests available"
-        setContests([]);
-      })
-      .finally(() => setLoading(false));
+    let ignore = false;
+    const load = async () => {
+      setLoading(true);
+      const params = filter !== "ALL" ? { status: filter } : {};
+      try {
+        const res = await contestService.getContests(params);
+        if (!ignore) setContests(res.data?.contests || res.data?.content || (Array.isArray(res.data) ? res.data : []));
+      } catch {
+        if (!ignore) setContests([]);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    };
+    load();
+    return () => { ignore = true; };
   }, [filter]);
 
   const handleJoinPrivate = async (e) => {
@@ -299,9 +303,8 @@ export default function Contests() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-              filter === f ? "bg-black text-white" : "bg-slate-100 text-slate-600 hover:text-black"
-            }`}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${filter === f ? "bg-black text-white" : "bg-slate-100 text-slate-600 hover:text-black"
+              }`}
           >
             {f === "LIVE" && <span className="mr-1">🔴</span>}{f}
           </button>

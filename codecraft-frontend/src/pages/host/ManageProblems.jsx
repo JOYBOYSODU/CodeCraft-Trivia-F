@@ -17,6 +17,7 @@ export default function HostManageProblems() {
                 const data = res.data;
                 setProblems(data?.content ?? data?.problems ?? data ?? []);
             } catch (err) {
+                console.error("Error loading problems:", err);
                 toast.error("Failed to load problems");
             } finally {
                 setLoading(false);
@@ -99,13 +100,12 @@ export default function HostManageProblems() {
                                         <td className="px-6 py-4 font-medium text-gray-900">{problem.title}</td>
                                         <td className="px-6 py-4">
                                             <span
-                                                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                                    (problem.difficulty ?? "").toLowerCase() === "easy"
+                                                className={`px-3 py-1 rounded-full text-sm font-medium ${(problem.difficulty ?? "").toLowerCase() === "easy"
                                                         ? "bg-green-100 text-green-700"
                                                         : (problem.difficulty ?? "").toLowerCase() === "medium"
-                                                        ? "bg-yellow-100 text-yellow-700"
-                                                        : "bg-red-100 text-red-700"
-                                                }`}
+                                                            ? "bg-yellow-100 text-yellow-700"
+                                                            : "bg-red-100 text-red-700"
+                                                    }`}
                                             >
                                                 {problem.difficulty ?? "UNKNOWN"}
                                             </span>
@@ -113,11 +113,10 @@ export default function HostManageProblems() {
                                         <td className="px-6 py-4 text-gray-700">{problem.points ?? "N/A"}</td>
                                         <td className="px-6 py-4">
                                             <span
-                                                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                                    problem.is_active === false || problem.isActive === false
+                                                className={`px-3 py-1 rounded-full text-sm font-medium ${problem.is_active === false || problem.isActive === false
                                                         ? "bg-gray-100 text-gray-700"
                                                         : "bg-blue-100 text-blue-700"
-                                                }`}
+                                                    }`}
                                             >
                                                 {problem.is_active === false || problem.isActive === false ? "Inactive" : "Active"}
                                             </span>

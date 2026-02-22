@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { Clock } from "lucide-react";
 
-function pluralize(val, unit) {
+function pluralize(val) {
     return `${String(val).padStart(2, "0")}`;
 }
 
 export default function ContestTimer({ endTime, onExpire }) {
     const [timeLeft, setTimeLeft] = useState(null);
     const onExpireRef = useRef(onExpire);
-    onExpireRef.current = onExpire;
+    useEffect(() => {
+        onExpireRef.current = onExpire;
+    }, [onExpire]);
 
     useEffect(() => {
         const end = new Date(endTime).getTime();
@@ -42,10 +44,6 @@ export default function ContestTimer({ endTime, onExpire }) {
     const minutes = Math.floor((totalSecs % 3600) / 60);
     const seconds = totalSecs % 60;
 
-    // Color based on remaining fraction
-    const endMs = new Date(endTime).getTime();
-    const totalMs = endMs - (endMs - timeLeft); // we don't have start, use fraction of timeLeft directly
-    const fraction = timeLeft / (endMs - Date.now() + timeLeft);
     // Simple approach: color by absolute time remaining
     let colorClass = "text-success";
     if (totalSecs < 600) colorClass = "text-danger";

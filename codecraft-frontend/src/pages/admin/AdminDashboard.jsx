@@ -33,29 +33,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const StatCard = ({ icon: Icon, label, value, color, action, actionLabel }) => (
-    <div className={`bg-gradient-to-br from-${color}-50 to-${color}-100 rounded-lg p-6 border border-${color}-200`}>
-      <div className="flex justify-between items-start mb-4">
-        <h3 className={`text-sm font-medium text-${color}-900`}>{label}</h3>
-        <Icon size={20} className={`text-${color}-600`} />
-      </div>
-      {loading ? (
-        <div className={`h-8 bg-${color}-200 rounded skeleton-line`}></div>
-      ) : (
-        <>
-          <div className={`text-3xl font-bold text-${color}-900 mb-2`}>{value}</div>
-          {action && (
-            <button
-              onClick={action}
-              className={`text-${color}-700 hover:text-${color}-900 text-sm font-medium`}
-            >
-              {actionLabel} →
-            </button>
-          )}
-        </>
-      )}
-    </div>
-  );
+
 
   return (
     <div className="min-h-screen bg-white p-8">

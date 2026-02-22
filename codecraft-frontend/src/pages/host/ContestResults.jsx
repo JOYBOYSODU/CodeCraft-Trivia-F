@@ -16,6 +16,7 @@ const ContestResults = () => {
 
   useEffect(() => {
     fetchContestResults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contestId]);
 
   const fetchContestResults = async () => {
@@ -40,7 +41,7 @@ const ContestResults = () => {
       const subs = await hostService.getSubmissions(contestId, resultId);
       setSubmissions(subs);
       setViewingSubmission(resultId);
-    } catch (err) {
+    } catch {
       toast.error('Failed to load submissions');
     }
   };
@@ -66,7 +67,7 @@ const ContestResults = () => {
       a.download = `${contest.title}-results.csv`;
       a.click();
       toast.success('Results exported');
-    } catch (err) {
+    } catch {
       toast.error('Failed to export results');
     }
   };
@@ -134,11 +135,10 @@ const ContestResults = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Status</p>
-                <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mt-2 ${
-                  selectedResult.isShortlisted
+                <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mt-2 ${selectedResult.isShortlisted
                     ? 'bg-green-100 text-green-700'
                     : 'bg-gray-100 text-gray-700'
-                }`}>
+                  }`}>
                   {selectedResult.isShortlisted ? 'SHORTLISTED' : 'NOT SHORTLISTED'}
                 </span>
               </div>
@@ -154,11 +154,10 @@ const ContestResults = () => {
                 <div key={idx} className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-semibold text-gray-900">{sub.problemTitle}</h3>
-                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                      sub.verdict === 'ACCEPTED'
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${sub.verdict === 'ACCEPTED'
                         ? 'bg-green-100 text-green-700'
                         : 'bg-red-100 text-red-700'
-                    }`}>
+                      }`}>
                       {sub.verdict}
                     </span>
                   </div>
@@ -221,21 +220,19 @@ const ContestResults = () => {
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('shortlisted')}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                activeTab === 'shortlisted'
+              className={`px-4 py-2 rounded-lg font-medium transition ${activeTab === 'shortlisted'
                   ? 'bg-[#F7E800] text-gray-900'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               Shortlisted ({shortlistedResults.length})
             </button>
             <button
               onClick={() => setActiveTab('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                activeTab === 'all'
+              className={`px-4 py-2 rounded-lg font-medium transition ${activeTab === 'all'
                   ? 'bg-[#F7E800] text-gray-900'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               All Participants ({results.length})
             </button>

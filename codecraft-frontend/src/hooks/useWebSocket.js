@@ -14,7 +14,7 @@ export function useWebSocket({ contestId, autoConnect = true } = {}) {
     const [status, setStatus] = useState('disconnected');
     const [error, setError] = useState(null);
     const contestIdRef = useRef(contestId);
-    
+
     // Update ref when contestId changes
     useEffect(() => {
         contestIdRef.current = contestId;
@@ -24,13 +24,14 @@ export function useWebSocket({ contestId, autoConnect = true } = {}) {
     useEffect(() => {
         if (!autoConnect || !token) return;
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setStatus('connecting');
         socketService.connect(
             token,
             () => {
                 setStatus('connected');
                 setError(null);
-                
+
                 // Join contest room if contestId provided
                 if (contestIdRef.current) {
                     socketService.joinContest(contestIdRef.current);
@@ -64,7 +65,7 @@ export function useWebSocket({ contestId, autoConnect = true } = {}) {
             () => {
                 setStatus('connected');
                 setError(null);
-                
+
                 if (contestIdRef.current) {
                     socketService.joinContest(contestIdRef.current);
                 }
