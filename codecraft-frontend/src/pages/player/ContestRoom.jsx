@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { contestService } from "../../services/contestService";
+import { problemService } from "../../services/problemService";
 import { submissionService } from "../../services/submissionService";
 import { useContestWebSocket } from "../../hooks/useWebSocket";
 import { useAuth } from "../../context/AuthContext";
@@ -104,18 +105,104 @@ export default function ContestRoom() {
 
     const loadData = useCallback(async () => {
         try {
-            const [cRes, sRes, lRes] = await Promise.all([
-                contestService.getContest(id),
-                submissionService.getSubmissions({ contest_id: id }),
-                contestService.getLeaderboard(id),
-            ]);
-            setContest(cRes.data);
-            setProblems(cRes.data?.problems ?? []);
-            setSubmissions(sRes.data?.content ?? sRes.data ?? []);
-            setLeaderboard(lRes.data ?? []);
-        } catch {
-            // Don't show error toast, just set contest to null
-            // This will trigger the "No contest available" message
+            setLoading(true);
+
+            // 1. Mandatory: Get contest details
+            let contestData = null;
+            try {
+                const cRes = await contestService.getContest(id);
+                contestData = cRes.data?.contest || cRes.data;
+                setContest(contestData);
+            } catch (err) {
+                console.error("Failed to load contest details:", err);
+                setContest(null);
+                setLoading(false);
+                return;
+            }
+
+            // 2. Parse and hydrate problems
+            if (contestData?.problems) {
+                try {
+                    let rawProblems = contestData.problems;
+
+                    // Handle stringified JSON
+                    if (typeof rawProblems === "string") {
+                        try {
+                            rawProblems = JSON.parse(rawProblems);
+                        } catch (e) {
+                            console.error("Failed to parse problems string:", e);
+                            rawProblems = [];
+                        }
+                    }
+
+                    if (Array.isArray(rawProblems)) {
+                        // If we have full objects, use them
+                        if (rawProblems.length > 0 && typeof rawProblems[0] === "object") {
+                            // Map backend format {problem_id, points} to UI format {id, title...} if needed
+                            // But wait, if they are already hydrated (title exists), just use them
+                            if (rawProblems[0].title) {
+                                setProblems(rawProblems);
+                            } else {
+                                // They are {problem_id, points}, we need to hydrate titles
+                                const hydrated = await Promise.all(
+                                    rawProblems.map(async (rp) => {
+                                        try {
+                                            const pRes = await problemService.getProblem(rp.problem_id || rp.id || rp);
+                                            const pData = pRes.data?.problem || pRes.data;
+                                            return { ...pData, points: rp.points || pData.points };
+                                        } catch (e) {
+                                            console.warn(`Failed to hydrate problem ${rp.problem_id || rp.id || rp}:`, e);
+                                            return { id: rp.problem_id || rp.id || rp, title: `Problem #${rp.problem_id || rp.id || rp}`, points: rp.points || 0, difficulty: "UNKNOWN" };
+                                        }
+                                    })
+                                );
+                                setProblems(hydrated);
+                            }
+                        } else {
+                            // They are just IDs [1, 4, 6]
+                            const hydrated = await Promise.all(
+                                rawProblems.map(async (pid) => {
+                                    try {
+                                        const pRes = await problemService.getProblem(pid);
+                                        return pRes.data?.problem || pRes.data;
+                                    } catch (e) {
+                                        console.warn(`Failed to hydrate problem ${pid}:`, e);
+                                        return { id: pid, title: `Problem #${pid}`, points: 0, difficulty: "UNKNOWN" };
+                                    }
+                                })
+                            );
+                            setProblems(hydrated);
+                        }
+                    } else {
+                        setProblems([]);
+                    }
+                } catch (err) {
+                    console.error("Error processing problems:", err);
+                    setProblems([]);
+                }
+            } else {
+                setProblems([]);
+            }
+
+            // 3. Optional: Get user submissions
+            try {
+                const sRes = await submissionService.getSubmissions({ contest_id: id });
+                setSubmissions(sRes.data?.submissions ?? sRes.data ?? []);
+            } catch (err) {
+                console.warn("Failed to load submissions for contest:", err);
+                setSubmissions([]);
+            }
+
+            // 4. Optional: Get leaderboard
+            try {
+                const lRes = await contestService.getLeaderboard(id);
+                setLeaderboard(lRes.data ?? []);
+            } catch (err) {
+                console.warn("Failed to load leaderboard for contest:", err);
+                setLeaderboard([]);
+            }
+        } catch (globalErr) {
+            console.error("Global error loading contest data:", globalErr);
             setContest(null);
         } finally {
             setLoading(false);

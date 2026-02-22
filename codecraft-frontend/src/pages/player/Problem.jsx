@@ -21,8 +21,6 @@ const safe = (val, fallback) => {
     return val;
 };
 
-const trim = (s) => (s ?? "").replace(/\s+$/gm, "").trim();
-
 const DIFF_STYLE = {
     EASY: { bg: "rgba(0,175,85,0.1)", color: "#00AF55", border: "rgba(0,175,85,0.25)" },
     MEDIUM: { bg: "rgba(255,192,30,0.1)", color: "#FFC01E", border: "rgba(255,192,30,0.25)" },

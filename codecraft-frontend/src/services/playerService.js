@@ -1,7 +1,7 @@
 import axiosInstance from "../api/axiosInstance";
 
 export const playerService = {
-    getMe: () => axiosInstance.get("/player/me"),
-    getStats: () => axiosInstance.get("/player/stats"),
-    getLeaderboard: (page = 0, size = 100) => axiosInstance.get("/player/leaderboard", { params: { page, size } }),
+    getMe: () => axiosInstance.get("/players/profile"),
+    getStats: () => axiosInstance.get("/players/stats"),
+    getLeaderboard: (page = 0, limit = 100) => axiosInstance.get("/leaderboard/global", { params: { page, limit } }),
 };

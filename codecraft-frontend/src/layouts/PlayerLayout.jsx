@@ -18,7 +18,8 @@ export default function PlayerLayout() {
 
             // Show modal only on first login (player has never seen recommendations)
             if (!hasSeenRecommendations) {
-                setShowWelcomeModal(true);
+                // Defer state update to avoid cascading render warning
+                setTimeout(() => setShowWelcomeModal(true), 0);
                 // Mark as seen for this session
                 localStorage.setItem(`ai_rec_seen_${user.id}`, "true");
             }

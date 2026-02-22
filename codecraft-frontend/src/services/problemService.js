@@ -1,6 +1,5 @@
-import { publicApi, privateApi } from "./api";
+import { publicApi } from "./api";
 import axiosInstance from "../api/axiosInstance";
-import { publicAxios } from "../api/axiosInstance";
 
 export const problemService = {
     // Public / Player — use publicAxios so expired JWT doesn't block the list

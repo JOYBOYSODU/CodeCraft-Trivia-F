@@ -9,8 +9,8 @@ export default function GlobalLeaderboard() {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        playerService.getLeaderboard(0, 100)
-            .then((res) => setLeaderboard(res.data?.content ?? res.data ?? []))
+        playerService.getLeaderboard(1, 100) // Changed page 0 to 1 as per backend logic
+            .then((res) => setLeaderboard(res.data?.leaderboard ?? []))
             .catch(() => setLeaderboard([]))
             .finally(() => setLoading(false));
     }, []);

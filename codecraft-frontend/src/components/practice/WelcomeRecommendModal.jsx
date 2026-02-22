@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Sparkles, X } from 'lucide-react';
 
 /**
@@ -17,7 +16,7 @@ export default function WelcomeRecommendModal({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-yellow-50 border border-yellow-200 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
-        
+
         {/* Header with gradient */}
         <div className="bg-gradient-to-r from-yellow-500 to-yellow-400 p-6 relative">
           <button
@@ -26,7 +25,7 @@ export default function WelcomeRecommendModal({
           >
             <X size={18} />
           </button>
-          
+
           <div className="flex items-center gap-3">
             <div className="text-4xl">🤖</div>
             <div>
@@ -42,7 +41,7 @@ export default function WelcomeRecommendModal({
             <p className="text-slate-800 font-semibold text-lg">
               Welcome back, <span className="text-yellow-600">{playerName}</span>!
             </p>
-            
+
             <p className="text-slate-700 text-sm leading-relaxed">
               Your AI practice coach has analyzed your profile and built a <span className="text-yellow-600 font-semibold">personalized learning roadmap</span> tailored to your level and goals.
             </p>
@@ -64,7 +63,7 @@ export default function WelcomeRecommendModal({
           >
             Later
           </button>
-          
+
           <button
             onClick={onViewRoadmap}
             className="flex-1 px-4 py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-slate-900 transition-colors font-bold text-sm flex items-center justify-center gap-2"

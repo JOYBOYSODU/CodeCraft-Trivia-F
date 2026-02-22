@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { usePlayerGoals } from "../../hooks/usePlayerGoals";
 import {
@@ -29,7 +29,7 @@ function getRelativeTime(timestamp) {
 export default function PracticePage() {
   const { user } = useAuth();
   const { playerData, goals, performance, loading: goalsLoading, error: goalsError, isUsingFallback, refetch } = usePlayerGoals(user?.id);
-  
+
   const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,7 +40,7 @@ export default function PracticePage() {
     return (playerData.context?.questionsSolved ?? []).length === 0;
   }, [playerData]);
 
-  const loadRecommendations = async ({ force = false } = {}) => {
+  const loadRecommendations = useCallback(async ({ force = false } = {}) => {
     try {
       setLoading(true);
       setError("");
@@ -87,13 +87,13 @@ export default function PracticePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerData, goals, user?.id]);
 
   useEffect(() => {
     if (playerData) {
       loadRecommendations();
     }
-  }, [playerData, goals]);
+  }, [playerData, loadRecommendations]);
 
   const handleRefresh = () => {
     const ok = window.confirm(

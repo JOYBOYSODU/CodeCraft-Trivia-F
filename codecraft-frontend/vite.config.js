@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/judge0/, ''),
           headers: {
-            'X-RapidAPI-Key': env.VITE_JUDGE0_KEY ?? '',
+            'X-RapidAPI-Key': env.VITE_JUDGE0_KEY || '8878308e1fmshc0947bee17e5105p1f66c1jsn0438ffc4dc6b',
             'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
           },
         },

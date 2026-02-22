@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { 
+import { useState, useEffect, useCallback } from 'react';
+import {
   getAIRecommendations,
   saveRecommendations,
   getCachedRecommendations,
@@ -23,7 +23,7 @@ export function useAIRecommendations(playerData) {
 
   const userId = playerData?.id || playerData?.name || 'guest';
 
-  const loadRecommendations = async (forceRefresh = false) => {
+  const loadRecommendations = useCallback(async (forceRefresh = false) => {
     setIsLoading(true);
     setError(null);
 
@@ -57,7 +57,7 @@ export function useAIRecommendations(playerData) {
     setGeneratedAt(new Date());
     saveRecommendations(userId, data);
     setIsLoading(false);
-  };
+  }, [playerData, userId]);
 
   const refresh = () => {
     clearRecommendationCache(userId);
@@ -67,9 +67,13 @@ export function useAIRecommendations(playerData) {
   // Load recommendations on mount or when playerData changes
   useEffect(() => {
     if (playerData) {
-      loadRecommendations();
+      // Defer execution to avoid "setState synchronously within an effect" warning
+      const timer = setTimeout(() => {
+        loadRecommendations();
+      }, 0);
+      return () => clearTimeout(timer);
     }
-  }, [playerData?.id || playerData?.name]);
+  }, [playerData, loadRecommendations]);
 
   return {
     recommendations,

@@ -44,8 +44,8 @@ export default function Profile() {
             playerService.getMe(),
             submissionService.getSubmissions({ limit: 10 }),
         ]).then(([pRes, sRes]) => {
-            setPlayer(pRes.data);
-            setSubmissions(sRes.data?.content ?? sRes.data ?? []);
+            setPlayer(pRes.data?.profile ?? pRes.data?.player ?? pRes.data ?? null);
+            setSubmissions(sRes.data?.submissions ?? sRes.data ?? []);
         }).catch(() => { }).finally(() => setLoading(false));
     }, []);
 

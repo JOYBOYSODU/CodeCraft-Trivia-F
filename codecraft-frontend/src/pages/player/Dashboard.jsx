@@ -46,7 +46,7 @@ export default function Dashboard() {
             contestService.getContests({ status: "UPCOMING", limit: 3 }),
             submissionService.getSubmissions({ limit: 5 }),
         ]).then(([pRes, cRes, sRes]) => {
-            setPlayer(pRes.data?.player ?? pRes.data ?? null);
+            setPlayer(pRes.data?.profile ?? pRes.data?.player ?? pRes.data ?? null);
 
             // API returns { success, contests: [...] }
             const cData = cRes.data;

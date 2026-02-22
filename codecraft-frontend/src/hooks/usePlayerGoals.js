@@ -63,7 +63,7 @@ export function usePlayerGoals(userId) {
 
       // Fetch player snapshot and performance in parallel
       let snapshotData, performanceData;
-      
+
       try {
         const [snapshotRes, performanceRes] = await Promise.all([
           playerGoalService.getPlayerSnapshot(userId),
@@ -86,11 +86,11 @@ export function usePlayerGoals(userId) {
       try {
         const goalsRes = await playerGoalService.getPlayerGoals(userId);
         setGoals(goalsRes.data);
-      } catch (err) {
+      } catch {
         // If no goals exist, calculate them
         const calculatedGoals = generateCompleteGoals(snapshotData, performanceData);
         setGoals(calculatedGoals);
-        
+
         // Optionally save the calculated goals (skip if using fallback)
         if (!isUsingFallback) {
           try {
@@ -112,7 +112,7 @@ export function usePlayerGoals(userId) {
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, isUsingFallback]);
 
   useEffect(() => {
     fetchGoals();

@@ -42,7 +42,7 @@ export const playerGoalService = {
  * @returns {object} Weekly goal object
  */
 export function calculateWeeklyGoal(playerData, performance) {
-  const { stats, level, tier } = playerData;
+  const { stats, tier } = playerData;
   const { weakAreas = [], strengthAreas = [] } = performance;
 
   // Determine target problems based on level and tier
@@ -85,7 +85,7 @@ export function calculateWeeklyGoal(playerData, performance) {
  * @returns {object} Monthly goal object
  */
 export function calculateMonthlyGoal(playerData, performance) {
-  const { stats, level } = playerData;
+  const { stats } = playerData;
   const weeklyGoal = calculateWeeklyGoal(playerData, performance);
 
   // Monthly = 4 * weekly, but cap it
@@ -94,7 +94,6 @@ export function calculateMonthlyGoal(playerData, performance) {
   // Determine difficulty progression
   const easyCount = stats?.easySolved || 0;
   const mediumCount = stats?.mediumSolved || 0;
-  const hardCount = stats?.hardSolved || 0;
 
   let targetDifficulty = "EASY";
   if (easyCount >= 10 && mediumCount >= 5) {

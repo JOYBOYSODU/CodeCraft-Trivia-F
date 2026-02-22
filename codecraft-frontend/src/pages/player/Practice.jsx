@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { problemService } from "../../services/problemService";
 import { submissionService } from "../../services/submissionService";
@@ -55,7 +55,7 @@ export default function Practice() {
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
     // Load problems
-    const loadProblems = async (pageNum = 1, diff = difficulty, searchQuery = search) => {
+    const loadProblems = useCallback(async (pageNum = 1, diff = difficulty, searchQuery = search) => {
         setLoading(true);
         setError(null);
 
@@ -92,10 +92,10 @@ export default function Practice() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [difficulty, search]);
 
     // Load solved problems (for logged-in users)
-    const loadSolvedProblems = async () => {
+    const loadSolvedProblems = useCallback(async () => {
         try {
             const response = await submissionService.getSubmissions({
                 verdict: "ACCEPTED",
@@ -109,13 +109,13 @@ export default function Practice() {
         } catch {
             // Silently fail - user might not be logged in
         }
-    };
+    }, []);
 
     // Initial load
     useEffect(() => {
         loadProblems(1, difficulty, search);
         loadSolvedProblems();
-    }, []);
+    }, [loadProblems, loadSolvedProblems, difficulty, search]);
 
     // Handle difficulty change
     const handleDifficultyChange = (diff) => {
