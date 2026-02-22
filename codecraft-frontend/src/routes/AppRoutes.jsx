@@ -19,6 +19,7 @@ import Contests from "../pages/player/Contests";
 import ContestRoom from "../pages/player/ContestRoom";
 import Leaderboard from "../pages/player/Leaderboard";
 import Profile from "../pages/player/Profile";
+import GlobalLeaderboard from "../pages/player/GlobalLeaderboard";
 
 // Admin pages
 import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -54,6 +55,7 @@ export default function AppRoutes() {
                         <Route path="/contests" element={<Contests />} />
                         <Route path="/contests/:id" element={<ContestRoom />} />
                         <Route path="/leaderboard/:contestId" element={<Leaderboard />} />
+                        <Route path="/leaderboard" element={<GlobalLeaderboard />} />
                         <Route path="/profile" element={<Profile />} />
                     </Route>
                 </Route>
