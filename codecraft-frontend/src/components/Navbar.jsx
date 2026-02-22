@@ -129,6 +129,7 @@ export default function Navbar() {
                                     {[
                                         { to: "/dashboard", label: "Dashboard" },
                                         { to: "/practice", label: "Practice" },
+                                        { to: "/ai-recommendations", label: "AI Recommendations" },
                                         { to: "/contests", label: "Contests" },
                                         { to: "/profile", label: "Profile" },
                                     ].map((l) => (

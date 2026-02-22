@@ -201,7 +201,7 @@ export default function Landing() {
                     <div /> {/* Invisible spacer for grid balance */}
                     <Link to="/" className="hero-brand" style={{ justifySelf: "center", margin: 0 }}>
                         <Code2 size={20} className="hero-brand__icon" />
-                        <span className="hero-brand__text">CodeCraft</span>
+                        <span className="hero-brand__text">CommitArena</span>
                     </Link>
                     <div className="hero-nav__actions" style={{ justifySelf: "end" }}>
                         <Link to="/login" className="hero-btn hero-btn--ghost">Log In</Link>
@@ -222,7 +222,7 @@ export default function Landing() {
                         </div>
                         <h1 className="hero-title">
                             <DecryptedText
-                                text="Build contest agents for engineering hiring"
+                                text="Craft Next-Gen Assessment Platforms"
                                 animateOn="view"
                                 revealDirection="start"
                                 sequential
@@ -234,7 +234,7 @@ export default function Landing() {
                             />
                         </h1>
                         <p className="hero-copy">
-                            CodeCraft helps hiring teams parse submissions, track live leaderboards,
+                            CommitArena helps hiring teams parse submissions, track live leaderboards,
                             and validate skills faster — reducing time-to-hire without sacrificing rigor.
                         </p>
                         <div className="hero-cta">
@@ -564,7 +564,7 @@ export default function Landing() {
                     Ready to compete?
                 </h2>
                 <p style={{ color: "#4B5563", fontSize: "0.95rem", margin: "0 0 2rem", lineHeight: 1.6 }}>
-                    Join thousands of developers and companies on CodeCraft.
+                    Join thousands of developers and companies on CommitArena.
                 </p>
                 <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap" }}>
                     <Link to="/register" className="hero-btn hero-btn--solid" style={{ padding: "0.75rem 1.75rem", fontSize: "0.9rem", height: "auto", border: "none" }}>
@@ -579,7 +579,7 @@ export default function Landing() {
             {/* ── Footer ── */}
             <footer style={{ borderTop: "1px solid rgba(11,11,11,0.1)", padding: "1.75rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", color: "#9CA3AF", fontSize: "0.75rem", fontFamily: "'JetBrains Mono', monospace" }}>
                 <Code2 size={13} color="#0B0B0B" />
-                CodeCraft — Real-Time Competitive Coding &amp; Hiring Platform
+                CommitArena — Real-Time Competitive Coding &amp; Hiring Platform
             </footer>
         </div>
     );

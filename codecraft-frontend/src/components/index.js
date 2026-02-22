@@ -23,6 +23,13 @@ export { default as ConnectionStatus } from './ConnectionStatus';
 // Skeleton Loaders
 export { default as Skeleton, SkeletonCard, SkeletonTable, SkeletonText, SkeletonAvatar } from './Skeleton';
 
+// Practice Components (AI Recommendations)
+export { default as PlayerSummaryBanner } from './practice/PlayerSummaryBanner';
+export { default as WeeklyGoalCard } from './practice/WeeklyGoalCard';
+export { default as ProblemRoadmapList } from './practice/ProblemRoadmapList';
+export { default as RecommendationCard } from './practice/RecommendationCard';
+export { default as WelcomeRecommendModal } from './practice/WelcomeRecommendModal';
+
 // Core Components
 export { default as Navbar } from './Navbar';
 export { default as Sidebar } from './Sidebar';

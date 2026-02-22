@@ -58,7 +58,7 @@ export default function Login() {
                     <Link to="/" className="inline-flex items-center gap-2 mb-4">
                         <Code2 className="text-primary" size={24} />
                         <span className="font-mono font-bold text-xl text-gradient">
-                            CodeCraft
+                            CommitArena
                         </span>
                     </Link>
                     <p className="text-slate-600 text-sm">Sign in to your account</p>

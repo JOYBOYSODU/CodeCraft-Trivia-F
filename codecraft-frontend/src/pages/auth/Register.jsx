@@ -10,8 +10,9 @@ export default function Register() {
     const navigate = useNavigate();
     const location = useLocation();
     const defaultRole = location.state?.role ?? "PLAYER";
+    const initialRole = defaultRole === "HOST" ? "COMPANY" : defaultRole;
 
-    const [role, setRole] = useState(defaultRole);
+    const [role, setRole] = useState(initialRole);
     const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [showPw, setShowPw] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -54,6 +55,12 @@ export default function Register() {
                     email: form.email, 
                     password: form.password
                 });
+            } else if (role === "COMPANY" || role === "HOST") {
+                await authService.registerCompany({
+                    name: form.name,
+                    email: form.email,
+                    password: form.password
+                });
             } else {
                 await authService.register({ 
                     name: form.name, 
@@ -79,7 +86,7 @@ export default function Register() {
                     <Link to="/" className="inline-flex items-center gap-2 mb-4">
                         <Code2 className="text-primary" size={24} />
                         <span className="font-mono font-bold text-xl text-gradient">
-                            CodeCraft
+                            CommitArena
                         </span>
                     </Link>
                     <p className="text-slate-600 text-sm">Create your account</p>
@@ -94,9 +101,9 @@ export default function Register() {
                                     Create an <span className="font-semibold text-slate-900">Admin</span> account.
                                     Host accounts must be created by an administrator.
                                 </>
-                            ) : role === "HOST" ? (
+                            ) : role === "COMPANY" ? (
                                 <>
-                                    Host accounts are created by administrators only.
+                                    Company accounts are created by administrators only.
                                 </>
                             ) : (
                                 <>
@@ -111,7 +118,7 @@ export default function Register() {
                         <div className="grid grid-cols-3 gap-2">
                             {[
                                 { value: "PLAYER", title: "Player", sub: "Compete in contests", enabled: true },
-                                { value: "HOST", title: "Host", sub: "Company (under Host)", enabled: false },
+                                { value: "COMPANY", title: "Company", sub: "Host contests", enabled: true },
                                 { value: "ADMIN", title: "Admin", sub: "Platform management", enabled: true },
                             ].map(({ value, title, sub, enabled }) => (
                                 <button

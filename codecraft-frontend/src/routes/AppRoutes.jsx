@@ -14,6 +14,7 @@ import Register from "../pages/auth/Register";
 // Player pages
 import Dashboard from "../pages/player/Dashboard";
 import Practice from "../pages/player/Practice";
+import PracticePage from "../pages/player/PracticePage";
 import Problem from "../pages/player/Problem";
 import Contests from "../pages/player/Contests";
 import ContestRoom from "../pages/player/ContestRoom";
@@ -52,6 +53,7 @@ export default function AppRoutes() {
                     <Route element={<PlayerLayout />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/practice" element={<Practice />} />
+                        <Route path="/ai-recommendations" element={<PracticePage />} />
                         <Route path="/problems/:id" element={<Problem />} />
                         <Route path="/contests" element={<Contests />} />
                         <Route path="/contests/:id" element={<ContestRoom />} />

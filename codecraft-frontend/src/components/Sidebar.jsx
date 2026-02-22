@@ -9,6 +9,7 @@ import {
 const playerLinks = [
     { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/practice", icon: Code, label: "Practice" },
+    { to: "/ai-recommendations", icon: BookOpen, label: "AI Recommendations" },
     { to: "/contests", icon: Swords, label: "Contests" },
     { to: "/leaderboard", icon: Trophy, label: "Leaderboard" },
     { to: "/profile", icon: User, label: "Profile" },

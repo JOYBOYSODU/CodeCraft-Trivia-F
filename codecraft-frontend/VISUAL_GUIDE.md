@@ -215,7 +215,7 @@ showLabel={true}:  Shows dot + icon + text
 ### Navbar - Avatar Dropdown
 ```
 ┌────────────────────────────────────────────────┐
-│  CodeCraft                           [Avatar]▼ │
+│  CommitArena                           [Avatar]▼ │
 └────────────────────────────────────────────────┘
                                            ↓
                               ┌──────────────────┐
