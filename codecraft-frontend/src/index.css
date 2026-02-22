@@ -598,7 +598,7 @@ textarea.input-field {
   gap: 0.75rem;
   padding: 0.625rem 0.75rem;
   border-radius: 6px;
-  color: #4B5563;
+  color: #FFFFFF;
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
@@ -607,14 +607,14 @@ textarea.input-field {
 }
 
 .sidebar-link:hover {
-  color: #0B0B0B;
-  background-color: rgba(11, 11, 11, 0.05);
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-link.active {
   color: #0B0B0B;
-  background-color: rgba(247, 232, 0, 0.3);
-  border-right-color: #0B0B0B;
+  background-color: #FFEA00;
+  border-right-color: #FFEA00;
 }
 
 /* Gradient text */
