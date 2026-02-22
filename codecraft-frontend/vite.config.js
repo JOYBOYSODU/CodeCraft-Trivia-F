@@ -8,17 +8,4 @@ export default defineConfig({
     // Fix for sockjs-client using Node.js's `global` in browser context
     global: 'globalThis',
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-      },
-      '/ws': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        ws: true,
-      },
-    },
-  },
 })
