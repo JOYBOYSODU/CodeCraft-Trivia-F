@@ -47,11 +47,15 @@ export default function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
+                {/* Public: practice visible without login */}
+                <Route element={<PlayerLayout />}>
+                    <Route path="/practice" element={<Practice />} />
+                </Route>
+
                 {/* Player routes: guard → layout → pages */}
                 <Route element={<ProtectedRoute allowedRoles={["PLAYER"]} />}>
                     <Route element={<PlayerLayout />}>
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/practice" element={<Practice />} />
                         <Route path="/problems/:id" element={<Problem />} />
                         <Route path="/contests" element={<Contests />} />
                         <Route path="/contests/:id" element={<ContestRoom />} />
