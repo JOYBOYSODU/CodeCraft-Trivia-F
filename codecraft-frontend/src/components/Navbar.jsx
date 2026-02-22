@@ -150,6 +150,7 @@ export default function Navbar() {
                                 <nav className="hidden md:flex items-center gap-1 text-sm">
                                     {[
                                         { to: "/host", label: "Dashboard" },
+                                        { to: "/host/problems", label: "Problems" },
                                         { to: "/host/contests", label: "Contests" },
                                         { to: "/host/contests/create", label: "Create Contest" },
                                         { to: "/host/problems/create", label: "Create Problem" },

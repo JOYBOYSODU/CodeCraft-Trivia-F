@@ -28,6 +28,7 @@ const adminLinks = [
 
 const hostLinks = [
     { to: "/host", icon: Building2, label: "Dashboard" },
+    { to: "/host/problems", icon: BookOpen, label: "Problems" },
     { to: "/host/problems/create", icon: PlusCircle, label: "New Problem" },
     { to: "/host/contests/create", icon: PlusCircle, label: "New Contest" },
     { to: "/host/contests", icon: ListChecks, label: "My Contests" },
