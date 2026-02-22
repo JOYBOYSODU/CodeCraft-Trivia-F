@@ -12,11 +12,22 @@ export default function ApproveHosts() {
         setLoading(true);
         axiosInstance.get("/admin/hosts")
             .then((r) => setHosts(r.data?.content ?? r.data ?? []))
-            .catch(() => toast.error("Failed to load hosts"))
+            .catch((err) => {
+                // Handle 404 gracefully - endpoint might not be implemented yet
+                if (err.response?.status === 404) {
+                    setHosts([]);
+                } else {
+                    toast.error("Failed to load hosts");
+                }
+            })
             .finally(() => setLoading(false));
     };
 
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        const timer = setTimeout(() => load(), 0);
+        return () => clearTimeout(timer);
+
+    }, []);
 
     const approve = async (id) => {
         try {

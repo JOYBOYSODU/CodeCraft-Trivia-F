@@ -65,22 +65,16 @@ export default function Practice() {
                 limit: pageSize,
             };
 
-            // Only add difficulty if not "ALL"
             if (diff && diff !== "ALL") {
                 params.difficulty = diff.toUpperCase();
             }
 
-            // Add search if present
             if (searchQuery && searchQuery.trim()) {
                 params.search = searchQuery.trim();
             }
 
-            console.log("🔍 Fetching problems with params:", params);
-
             const response = await problemService.getProblems(params);
             const data = response.data;
-
-            console.log("✅ Response data:", data);
 
             if (data.success) {
                 setProblems(data.problems || []);
@@ -92,7 +86,6 @@ export default function Practice() {
                 setError(data.message || "Failed to load problems");
             }
         } catch (err) {
-            console.error("❌ Error loading problems:", err);
             setProblems([]);
             setTotal(0);
             setError(err.message || "Failed to connect to server");
@@ -108,7 +101,7 @@ export default function Practice() {
                 verdict: "ACCEPTED",
                 limit: 500,
             });
-            const submissions = response.data?.submissions || response.data || [];
+            const submissions = response.data?.submissions || response.data?.content || response.data || [];
             if (Array.isArray(submissions)) {
                 const solvedSet = new Set(submissions.map((s) => s.problem_id || s.problemId));
                 setSolvedIds(solvedSet);
@@ -180,6 +173,7 @@ export default function Practice() {
     }, [problems, solvedIds]);
 
     return (
+
         <div className="min-h-screen p-6" style={{ background: "#FAFAFA" }}>
             <div className="max-w-6xl mx-auto space-y-6">
 

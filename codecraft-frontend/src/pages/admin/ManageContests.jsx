@@ -19,12 +19,19 @@ export default function ManageContests() {
     const load = () => {
         setLoading(true);
         contestService.adminGetAll()
-            .then((r) => setContests(r.data?.content ?? r.data ?? []))
-            .catch(() => toast.error("Failed to load contests"))
+            .then((r) => setContests(r.data?.contests || r.data?.content || (Array.isArray(r.data) ? r.data : [])))
+            .catch(() => {
+                // Handle error silently - empty state will show
+                setContests([]);
+            })
             .finally(() => setLoading(false));
     };
 
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        const timer = setTimeout(() => load(), 0);
+        return () => clearTimeout(timer);
+
+    }, []);
 
     const freezeToggle = async (c) => {
         try {

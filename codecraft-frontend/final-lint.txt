@@ -1,0 +1,30 @@
+
+C:\Users\omtiw\Documents\GitHub\CodeCraft-Trivia-F\codecraft-frontend\src\components\ContestTimer.jsx
+  11:5  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+   9 |     const [timeLeft, setTimeLeft] = useState(null);
+  10 |     const onExpireRef = useRef(onExpire);
+> 11 |     onExpireRef.current = onExpire;
+     |     ^^^^^^^^^^^^^^^^^^^ Cannot update ref during render
+  12 |
+  13 |     useEffect(() => {
+  14 |         const end = new Date(endTime).getTime();  react-hooks/refs
+
+C:\Users\omtiw\Documents\GitHub\CodeCraft-Trivia-F\codecraft-frontend\src\components\Sidebar.jsx
+  38:5  warning  Unused eslint-disable directive (no problems were reported from 'no-unused-vars')
+
+C:\Users\omtiw\Documents\GitHub\CodeCraft-Trivia-F\codecraft-frontend\src\pages\admin\ApproveHosts.jsx
+  29:9  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+C:\Users\omtiw\Documents\GitHub\CodeCraft-Trivia-F\codecraft-frontend\src\pages\admin\ManageContests.jsx
+  33:9  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+C:\Users\omtiw\Documents\GitHub\CodeCraft-Trivia-F\codecraft-frontend\src\pages\auth\Landing.jsx
+    2:16  error    'useNavigate' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  319:25  warning  Unused eslint-disable directive (no problems were reported from 'no-unused-vars')
+
+✖ 6 problems (2 errors, 4 warnings)
+  0 errors and 4 warnings potentially fixable with the `--fix` option.
+

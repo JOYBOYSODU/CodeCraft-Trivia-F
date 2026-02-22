@@ -7,4 +7,10 @@ export const adminService = {
   getDashboardStats: () => axiosInstance.get("/admin/stats"),
   createAnnouncement: (data) => axiosInstance.post("/admin/announcements", data),
   getAnnouncements: (params) => axiosInstance.get("/admin/announcements", { params }),
+
+  // Company Approvals
+  getPendingCompanies: () => axiosInstance.get("/admin/companies/pending"),
+  approveCompany: (companyId, data) => axiosInstance.put(`/admin/companies/${companyId}/approve`, data),
+  rejectCompany: (companyId, data) => axiosInstance.put(`/admin/companies/${companyId}/reject`, data),
+  suspendCompany: (companyId, data) => axiosInstance.put(`/admin/companies/${companyId}/suspend`, data),
 };

@@ -9,36 +9,42 @@ import {
 const playerLinks = [
     { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/practice", icon: Code, label: "Practice" },
-    { to: "/contests", icon: Trophy, label: "Contests" },
+    { to: "/ai-recommendations", icon: BookOpen, label: "AI Recommendations" },
+    { to: "/contests", icon: Swords, label: "Contests" },
+    { to: "/leaderboard", icon: Trophy, label: "Leaderboard" },
     { to: "/profile", icon: User, label: "Profile" },
 ];
 
 const adminLinks = [
     { to: "/admin", icon: LayoutDashboard, label: "Overview" },
     { to: "/admin/users", icon: Users, label: "Users" },
-    { to: "/admin/hosts", icon: ShieldCheck, label: "Host Approvals" },
+    { to: "/admin/approve-hosts", icon: ShieldCheck, label: "Host Approvals" },
+    { to: "/admin/company-approvals", icon: Building2, label: "Company Approvals" },
     { to: "/admin/problems", icon: BookOpen, label: "Problems" },
-    { to: "/admin/problems/create", icon: PlusCircle, label: "New Problem" },
+    { to: "/admin/create-problem", icon: PlusCircle, label: "New Problem" },
     { to: "/admin/contests", icon: Swords, label: "Contests" },
-    { to: "/admin/contests/create", icon: PlusCircle, label: "New Contest" },
+    { to: "/admin/create-contest", icon: PlusCircle, label: "New Contest" },
     { to: "/admin/announcements", icon: Megaphone, label: "Announcements" },
 ];
 
 const hostLinks = [
     { to: "/host", icon: Building2, label: "Dashboard" },
+    { to: "/host/problems", icon: BookOpen, label: "Problems" },
     { to: "/host/problems/create", icon: PlusCircle, label: "New Problem" },
     { to: "/host/contests/create", icon: PlusCircle, label: "New Contest" },
     { to: "/host/contests", icon: ListChecks, label: "My Contests" },
 ];
 
 function SidebarLink({ to, icon: Icon, label, end: endProp }) {
+
+    const I = Icon; // to avoid warning but also keep JSX clean
     return (
         <NavLink
             to={to}
             end={endProp}
             className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
         >
-            <Icon size={16} />
+            <I size={16} />
             <span>{label}</span>
         </NavLink>
     );

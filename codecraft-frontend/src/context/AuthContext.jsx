@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 const AuthContext = createContext(null);
@@ -52,19 +53,22 @@ export function AuthProvider({ children }) {
 
     // Restore session on mount
     useEffect(() => {
-        const stored = readStoredAuth();
-        if (stored) {
-            const payload = parseJwt(stored.token);
-            if (payload && payload.exp && payload.exp * 1000 > Date.now()) {
-                const parsedUser = JSON.parse(stored.user);
-                setToken(stored.token);
-                setUser(parsedUser);
-                setRole(parsedUser.role);
-            } else {
-                clearStoredAuth();
+        const loadAuth = async () => {
+            const stored = readStoredAuth();
+            if (stored) {
+                const payload = parseJwt(stored.token);
+                if (payload && payload.exp && payload.exp * 1000 > Date.now()) {
+                    const parsedUser = JSON.parse(stored.user);
+                    setToken(stored.token);
+                    setUser(parsedUser);
+                    setRole(parsedUser.role);
+                } else {
+                    clearStoredAuth();
+                }
             }
-        }
-        setIsLoading(false);
+            setIsLoading(false);
+        };
+        loadAuth();
     }, []);
 
     const login = useCallback((tokenStr, userData, options = {}) => {

@@ -20,7 +20,10 @@ export default function CreateContest({ isHost = false }) {
 
     useEffect(() => {
         const svc = isHost ? problemService.hostGetAll() : problemService.adminGetAll();
-        svc.then((r) => setAllProblems(r.data?.content ?? r.data ?? []))
+        svc.then((r) => {
+            const data = r.data;
+            setAllProblems(data?.content ?? data?.problems ?? data ?? []);
+        })
             .catch(() => { })
             .finally(() => setFetching(false));
     }, [isHost]);

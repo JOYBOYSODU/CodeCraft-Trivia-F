@@ -170,6 +170,7 @@ export default function Problem() {
 
     const panelCases = sampleCases.length ? sampleCases : (examples.length ? examples.map((e, i) => ({ input: e.input, output: e.output, is_sample: true, label: `Case ${i + 1}` })) : []);
 
+
     // ─────────────────────────────────────────────────────────────────────────
     return (
         <div style={{ height: "calc(100vh - 56px)", display: "flex", flexDirection: "column", background: "#1A1A1A", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>

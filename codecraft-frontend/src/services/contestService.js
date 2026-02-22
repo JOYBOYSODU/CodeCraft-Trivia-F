@@ -7,6 +7,7 @@ export const contestService = {
     joinByInvite: (inviteCode) => axiosInstance.post(`/contests/join`, { inviteCode }),
 
     // Admin
+    createContest: (data) => axiosInstance.post("/admin/contests", data),
     adminCreate: (data) => axiosInstance.post("/admin/contests", data),
     adminUpdate: (id, data) => axiosInstance.put(`/admin/contests/${id}`, data),
     adminGetAll: (params) => axiosInstance.get("/admin/contests", { params }),

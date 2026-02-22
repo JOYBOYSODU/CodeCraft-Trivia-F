@@ -57,6 +57,7 @@ export default function Dashboard() {
             const sData = sRes.data;
             const sList = sData?.submissions ?? sData?.content ?? sData;
             setRecent(Array.isArray(sList) ? sList : []);
+
         }).catch(() => { }).finally(() => setLoading(false));
     }, []);
 
@@ -153,7 +154,9 @@ export default function Dashboard() {
                     { icon: Trophy, label: "Contest Wins", val: player?.total_wins ?? 0, color: "text-yellow-400", to: "/contests" },
                     { icon: Flame, label: "Streak Days", val: player?.streak_days ?? 0, color: "text-orange-400", to: null },
                     { icon: Star, label: "Global Rank", val: `#${player?.rank ?? "—"}`, color: "text-indigo-400", to: "/practice" },
-                ].map(({ icon: Icon, label, val, color, to }) => {
+                ].map((item) => {
+                    const Icon = item.icon;
+                    const { label, val, color, to } = item;
                     const content = (
                         <>
                             <Icon size={18} className={`mx-auto mb-1 ${color}`} />

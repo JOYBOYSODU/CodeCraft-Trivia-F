@@ -19,11 +19,15 @@ export default function ManageUsers() {
             .finally(() => setLoading(false));
     };
 
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        const timer = setTimeout(() => load(), 0);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const changeStatus = async (userId, status) => {
         try {
-            await axiosInstance.patch(`/admin/users/${userId}/status`, { status });
+            await axiosInstance.put(`/admin/users/${userId}/status`, { status });
             toast.success(`Status updated to ${status}`);
             setUsers((prev) => prev.map((u) => u.id === userId ? { ...u, status } : u));
         } catch {

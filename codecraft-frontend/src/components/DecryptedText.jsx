@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 
 const styles = {
@@ -200,9 +201,9 @@ export default function DecryptedText({
   const hoverProps =
     animateOn === "hover" || animateOn === "both"
       ? {
-          onMouseEnter: () => setIsHovering(true),
-          onMouseLeave: () => setIsHovering(false),
-        }
+        onMouseEnter: () => setIsHovering(true),
+        onMouseLeave: () => setIsHovering(false),
+      }
       : {};
 
   return (

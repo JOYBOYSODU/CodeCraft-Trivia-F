@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
+import ErrorModal from "../../components/ErrorModal";
+import { parseError } from "../../utils/errorHandler";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Code2, LogIn } from "lucide-react";
 
@@ -13,6 +15,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [remember, setRemember] = useState(true);
     const [errors, setErrors] = useState({});
+    const [modalError, setModalError] = useState(null);
 
     const set = (f, v) => {
         setForm((p) => ({ ...p, [f]: v }));
@@ -40,11 +43,8 @@ export default function Login() {
             const dest = { ADMIN: "/admin", HOST: "/host", COMPANY: "/host", PLAYER: "/dashboard" }[user.role] ?? "/dashboard";
             navigate(dest, { replace: true });
         } catch (err) {
-            const msg = err.response?.data?.message ?? "Login failed";
-            setErrors({ form: msg });
-            if (msg.toLowerCase().includes("banned")) toast.error("Account banned. Contact support.");
-            else if (msg.toLowerCase().includes("suspended")) toast.error("Account suspended. Contact support.");
-            else toast.error(msg);
+            const parsedError = parseError(err);
+            setModalError(parsedError);
         } finally {
             setLoading(false);
         }
@@ -58,7 +58,7 @@ export default function Login() {
                     <Link to="/" className="inline-flex items-center gap-2 mb-4">
                         <Code2 className="text-primary" size={24} />
                         <span className="font-mono font-bold text-xl text-gradient">
-                            CodeCraft
+                            CommitArena
                         </span>
                     </Link>
                     <p className="text-slate-600 text-sm">Sign in to your account</p>
@@ -121,6 +121,8 @@ export default function Login() {
                     <Link to="/" className="hover:text-slate-900 transition-colors">← Back to home</Link>
                 </p>
             </div>
+
+            <ErrorModal error={modalError} onClose={() => setModalError(null)} />
         </div>
     );
 }

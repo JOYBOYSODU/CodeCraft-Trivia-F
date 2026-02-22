@@ -13,7 +13,7 @@ export default function HostDashboard() {
         Promise.all([hostService.getMe(), hostService.getContests()])
             .then(([hRes, cRes]) => {
                 setHost(hRes.data);
-                setContests(cRes.data?.content ?? cRes.data ?? []);
+                setContests(cRes.data?.contests || cRes.data?.content || (Array.isArray(cRes.data) ? cRes.data : []));
             }).catch(() => { }).finally(() => setLoading(false));
     }, []);
 

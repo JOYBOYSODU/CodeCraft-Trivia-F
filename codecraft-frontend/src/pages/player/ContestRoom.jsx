@@ -2,17 +2,18 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { contestService } from "../../services/contestService";
 import { submissionService } from "../../services/submissionService";
-import { socketService } from "../../services/socketService";
+import { useContestWebSocket } from "../../hooks/useWebSocket";
 import { useAuth } from "../../context/AuthContext";
 import ContestTimer from "../../components/ContestTimer";
 import LeaderboardTable from "../../components/LeaderboardTable";
+import ConnectionStatus from "../../components/ConnectionStatus";
 import Loader from "../../components/Loader";
 import toast from "react-hot-toast";
-import { Trophy, List, History, AlertTriangle } from "lucide-react";
+import { Trophy, List, History, AlertTriangle, Sparkles, Award, TrendingUp } from "lucide-react";
 
 export default function ContestRoom() {
     const { id } = useParams();
-    const { token } = useAuth();
+    const { user } = useAuth();
 
     const [contest, setContest] = useState(null);
     const [problems, setProblems] = useState([]);
@@ -23,6 +24,83 @@ export default function ContestRoom() {
     const tabSwitchCount = useRef(0);
 
     const isLive = contest?.status === "LIVE";
+
+    // WebSocket connection with live event handlers
+    const { status: wsStatus } = useContestWebSocket(id, {
+        // Live leaderboard updates
+        onLeaderboardUpdate: (data) => {
+            if (!contest?.leaderboard_frozen) {
+                setLeaderboard(data.leaderboard || data);
+            }
+        },
+
+        // Problem solve notifications
+        onProblemSolve: (data) => {
+            const { username, problemTitle, points } = data;
+            if (username !== user?.username) {
+                toast.success(
+                    `🎯 ${username} solved ${problemTitle} (+${points} pts)`,
+                    { duration: 4000, icon: '⚡' }
+                );
+            }
+        },
+
+        // Rank change notifications
+        onRankChange: (data) => {
+            const { username, oldRank, newRank, change } = data;
+            if (username === user?.username) {
+                const icon = change > 0 ? '📈' : '📉';
+                const color = change > 0 ? 'success' : 'error';
+                toast[color](
+                    `${icon} Rank changed: ${oldRank} → ${newRank}`,
+                    { duration: 5000 }
+                );
+            }
+        },
+
+        // Level-up notifications
+        onLevelUp: (data) => {
+            const { newTier, xpGained } = data;
+            toast.success(
+                <div className="flex items-center gap-2">
+                    <Sparkles size={20} className="text-yellow-400" />
+                    <div>
+                        <p className="font-bold">Level Up!</p>
+                        <p className="text-sm">Reached {newTier} tier! (+{xpGained} XP)</p>
+                    </div>
+                </div>,
+                { duration: 6000 }
+            );
+        },
+
+        // Achievement unlock notifications
+        onAchievement: (data) => {
+            const { title } = data;
+            toast.success(
+                <div className="flex items-center gap-2">
+                    <Award size={20} className="text-green-400" />
+                    <div>
+                        <p className="font-bold">🏆 Achievement Unlocked!</p>
+                        <p className="text-sm">{title}</p>
+                    </div>
+                </div>,
+                { duration: 6000 }
+            );
+        },
+
+        // Contest status changes
+        onStatusChange: (data) => {
+            const { status, message } = data;
+            if (status === 'ENDED') {
+                toast.error('Contest has ended!', { duration: 5000 });
+                setContest(prev => ({ ...prev, status: 'ENDED' }));
+            } else if (status === 'LIVE') {
+                toast.success('Contest is now LIVE!', { duration: 5000 });
+                setContest(prev => ({ ...prev, status: 'LIVE' }));
+            }
+            if (message) toast.info(message);
+        },
+    });
 
     const loadData = useCallback(async () => {
         try {
@@ -36,28 +114,15 @@ export default function ContestRoom() {
             setSubmissions(sRes.data?.content ?? sRes.data ?? []);
             setLeaderboard(lRes.data ?? []);
         } catch {
-            toast.error("Failed to load contest");
+            // Don't show error toast, just set contest to null
+            // This will trigger the "No contest available" message
+            setContest(null);
         } finally {
             setLoading(false);
         }
     }, [id]);
 
     useEffect(() => { loadData(); }, [loadData]);
-
-    // WebSocket leaderboard subscription
-    useEffect(() => {
-        const topic = `/topic/contest/${id}/leaderboard`;
-        socketService.connect(token, () => {
-            socketService.subscribe(topic, (data) => {
-                if (!contest?.leaderboard_frozen) {
-                    setLeaderboard(Array.isArray(data) ? data : []);
-                }
-            });
-        });
-        return () => {
-            socketService.unsubscribe(topic);
-        };
-    }, [id, token, contest?.leaderboard_frozen]);
 
     // Anti-cheat: tab visibility
     useEffect(() => {
@@ -73,7 +138,7 @@ export default function ContestRoom() {
     }, [isLive]);
 
     if (loading) return <Loader fullscreen text="Loading contest..." />;
-    if (!contest) return <div className="flex items-center justify-center h-full text-slate-400">Contest not found</div>;
+    if (!contest) return <div className="flex items-center justify-center h-full text-slate-400">No contest available</div>;
 
     const TABS = [
         { key: "problems", label: "Problems", icon: List },
@@ -87,11 +152,12 @@ export default function ContestRoom() {
         <div className="space-y-4">
             {/* Header */}
             <div className="card flex items-start justify-between gap-4">
-                <div>
+                <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                         <span className={`badge ${contest.status === "LIVE" ? "status-live" : contest.status === "UPCOMING" ? "status-upcoming" : "status-ended"}`}>
                             {contest.status}
                         </span>
+                        {isLive && <ConnectionStatus status={wsStatus} showLabel size="sm" />}
                     </div>
                     <h1 className="text-xl font-mono font-bold text-slate-100">{contest.title}</h1>
                     {contest.description && (
@@ -118,13 +184,14 @@ export default function ContestRoom() {
 
             {/* Tabs */}
             <div className="border-b border-border flex gap-0">
+                {/* eslint-disable-next-line no-unused-vars */}
                 {TABS.map(({ key, label, icon: Icon }) => (
                     <button
                         key={key}
                         onClick={() => setActiveTab(key)}
                         className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium transition-colors duration-150 border-b-2 ${activeTab === key
-                                ? "border-primary text-primary"
-                                : "border-transparent text-slate-400 hover:text-white"
+                            ? "border-primary text-primary"
+                            : "border-transparent text-slate-400 hover:text-white"
                             }`}
                     >
                         <Icon size={14} />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { announcementService } from "../../services/announcementService";
+
 import axiosInstance from "../../api/axiosInstance";
 import toast from "react-hot-toast";
 import { Megaphone } from "lucide-react";
