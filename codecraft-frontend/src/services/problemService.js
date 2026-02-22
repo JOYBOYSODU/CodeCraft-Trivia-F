@@ -1,17 +1,43 @@
-import axiosInstance from "../api/axiosInstance";
+import { publicApi, privateApi } from "./api";
 
 export const problemService = {
-    // Public / Player
-    getProblems: (params) => axiosInstance.get("/problems", { params }),
-    getProblem: (id) => axiosInstance.get(`/problems/${id}`),
+    // Get all problems (public)
+    getProblems: async (params = {}) => {
+        try {
+            const response = await publicApi.get("/problems", { params });
+            console.log("📦 Problems API Response:", response.data); // Debug
+            return response;
+        } catch (error) {
+            console.error("❌ Get problems error:", error);
+            throw error;
+        }
+    },
 
-    // Admin
-    adminCreate: (data) => axiosInstance.post("/admin/problems", data),
-    adminUpdate: (id, data) => axiosInstance.put(`/admin/problems/${id}`, data),
-    adminDelete: (id) => axiosInstance.delete(`/admin/problems/${id}`),
-    adminGetAll: (params) => axiosInstance.get("/admin/problems", { params }),
+    // Get single problem (public)
+    getProblem: async (id) => {
+        try {
+            const response = await publicApi.get(`/problems/${id}`);
+            return response;
+        } catch (error) {
+            console.error("❌ Get problem error:", error);
+            throw error;
+        }
+    },
 
-    // Host
-    hostCreate: (data) => axiosInstance.post("/host/problems", data),
-    hostGetAll: () => axiosInstance.get("/host/problems"),
+    // Create problem (admin only)
+    createProblem: async (data) => {
+        return privateApi.post("/problems", data);
+    },
+
+    // Update problem (admin only)
+    updateProblem: async (id, data) => {
+        return privateApi.put(`/problems/${id}`, data);
+    },
+
+    // Delete problem (admin only)
+    deleteProblem: async (id) => {
+        return privateApi.delete(`/problems/${id}`);
+    },
 };
+
+export default problemService;

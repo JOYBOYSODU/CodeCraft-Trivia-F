@@ -46,9 +46,17 @@ export default function Dashboard() {
             contestService.getContests({ status: "UPCOMING", limit: 3 }),
             submissionService.getSubmissions({ limit: 5 }),
         ]).then(([pRes, cRes, sRes]) => {
-            setPlayer(pRes.data);
-            setContests(cRes.data?.content ?? cRes.data ?? []);
-            setRecent(sRes.data?.content ?? sRes.data ?? []);
+            setPlayer(pRes.data?.player ?? pRes.data ?? null);
+
+            // API returns { success, contests: [...] }
+            const cData = cRes.data;
+            const cList = cData?.contests ?? cData?.content ?? cData;
+            setContests(Array.isArray(cList) ? cList : []);
+
+            // API returns { success, submissions: [...] } or similar
+            const sData = sRes.data;
+            const sList = sData?.submissions ?? sData?.content ?? sData;
+            setRecent(Array.isArray(sList) ? sList : []);
         }).catch(() => { }).finally(() => setLoading(false));
     }, []);
 

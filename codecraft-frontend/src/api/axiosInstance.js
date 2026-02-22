@@ -68,4 +68,24 @@ axiosInstance.interceptors.response.use(
     }
 );
 
+// Public axios: no JWT check — for endpoints that don't need auth (e.g. GET /problems)
+export const publicAxios = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+// Still attach token if available (for optional auth), but NEVER redirect/reject on expiry
+publicAxios.interceptors.request.use((config) => {
+    const token = readToken();
+    if (token) {
+        const payload = parseJwt(token);
+        if (payload?.exp && payload.exp * 1000 > Date.now()) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+    }
+    return config;
+});
+
 export default axiosInstance;
