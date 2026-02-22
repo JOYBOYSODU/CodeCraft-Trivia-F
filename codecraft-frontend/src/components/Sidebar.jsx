@@ -17,11 +17,12 @@ const playerLinks = [
 const adminLinks = [
     { to: "/admin", icon: LayoutDashboard, label: "Overview" },
     { to: "/admin/users", icon: Users, label: "Users" },
-    { to: "/admin/hosts", icon: ShieldCheck, label: "Host Approvals" },
+    { to: "/admin/approve-hosts", icon: ShieldCheck, label: "Host Approvals" },
+    { to: "/admin/company-approvals", icon: Building2, label: "Company Approvals" },
     { to: "/admin/problems", icon: BookOpen, label: "Problems" },
-    { to: "/admin/problems/create", icon: PlusCircle, label: "New Problem" },
+    { to: "/admin/create-problem", icon: PlusCircle, label: "New Problem" },
     { to: "/admin/contests", icon: Swords, label: "Contests" },
-    { to: "/admin/contests/create", icon: PlusCircle, label: "New Contest" },
+    { to: "/admin/create-contest", icon: PlusCircle, label: "New Contest" },
     { to: "/admin/announcements", icon: Megaphone, label: "Announcements" },
 ];
 

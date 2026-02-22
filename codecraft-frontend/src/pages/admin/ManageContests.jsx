@@ -20,7 +20,10 @@ export default function ManageContests() {
         setLoading(true);
         contestService.adminGetAll()
             .then((r) => setContests(r.data?.content ?? r.data ?? []))
-            .catch(() => toast.error("Failed to load contests"))
+            .catch(() => {
+                // Handle error silently - empty state will show
+                setContests([]);
+            })
             .finally(() => setLoading(false));
     };
 

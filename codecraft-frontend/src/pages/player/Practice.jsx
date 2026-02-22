@@ -36,10 +36,11 @@ export default function Practice() {
         const params = { page: pg, size: pageSize };
         if (difficulty !== "ALL") params.difficulty = difficulty;
         if (search.trim()) params.search = search.trim();
-        problemService.getAll(params)
+        problemService.getAllProblems(params)
             .then((r) => {
                 const data = r.data;
-                setProblems(data?.content ?? data ?? []);
+                const items = data?.content ?? data?.problems ?? data ?? [];
+                setProblems(items);
                 setTotalPages(data?.totalPages ?? 1);
                 setPage(pg);
             })

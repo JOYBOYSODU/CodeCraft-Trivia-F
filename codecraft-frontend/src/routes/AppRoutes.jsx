@@ -25,17 +25,17 @@ import GlobalLeaderboard from "../pages/player/GlobalLeaderboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import ManageUsers from "../pages/admin/ManageUsers";
 import ApproveHosts from "../pages/admin/ApproveHosts";
-import CreateProblemAdmin from "../pages/admin/CreateProblem";
 import ManageProblems from "../pages/admin/ManageProblems";
-import CreateContestAdmin from "../pages/admin/CreateContest";
 import ManageContests from "../pages/admin/ManageContests";
 import PostAnnouncement from "../pages/admin/PostAnnouncement";
+import CompanyApprovals from "../pages/admin/CompanyApprovals";
+import CreateProblem from "../pages/admin/CreateProblem";
+import CreateContest from "../pages/admin/CreateContest";
 
 // Host pages
 import HostDashboard from "../pages/host/HostDashboard";
-import HostCreateProblem from "../pages/host/CreateProblem";
 import HostCreateContest from "../pages/host/CreateContest";
-import HostManageContest from "../pages/host/ManageContest";
+import ContestResults from "../pages/host/ContestResults";
 
 export default function AppRoutes() {
     return (
@@ -64,13 +64,14 @@ export default function AppRoutes() {
                 <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
                     <Route element={<AdminLayout />}>
                         <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/dashboard" element={<AdminDashboard />} />
                         <Route path="/admin/users" element={<ManageUsers />} />
-                        <Route path="/admin/hosts" element={<ApproveHosts />} />
+                        <Route path="/admin/approve-hosts" element={<ApproveHosts />} />
+                        <Route path="/admin/company-approvals" element={<CompanyApprovals />} />
                         <Route path="/admin/problems" element={<ManageProblems />} />
-                        <Route path="/admin/problems/create" element={<CreateProblemAdmin />} />
-                        <Route path="/admin/problems/:id/edit" element={<CreateProblemAdmin />} />
+                        <Route path="/admin/create-problem" element={<CreateProblem />} />
                         <Route path="/admin/contests" element={<ManageContests />} />
-                        <Route path="/admin/contests/create" element={<CreateContestAdmin />} />
+                        <Route path="/admin/create-contest" element={<CreateContest />} />
                         <Route path="/admin/announcements" element={<PostAnnouncement />} />
                     </Route>
                 </Route>
@@ -79,10 +80,9 @@ export default function AppRoutes() {
                 <Route element={<ProtectedRoute allowedRoles={["HOST", "COMPANY"]} />}>
                     <Route element={<HostLayout />}>
                         <Route path="/host" element={<HostDashboard />} />
-                        <Route path="/host/problems/create" element={<HostCreateProblem />} />
-                        <Route path="/host/contests/create" element={<HostCreateContest />} />
-                        <Route path="/host/contests" element={<HostManageContest />} />
-                        <Route path="/host/contests/:id" element={<HostManageContest />} />
+                        <Route path="/host/dashboard" element={<HostDashboard />} />
+                        <Route path="/host/create-contest" element={<HostCreateContest />} />
+                        <Route path="/host/contest/:contestId/results" element={<ContestResults />} />
                     </Route>
                 </Route>
 

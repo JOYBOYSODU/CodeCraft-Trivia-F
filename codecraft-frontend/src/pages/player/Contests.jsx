@@ -213,7 +213,10 @@ export default function Contests() {
     contestService
       .getContests(params)
       .then((res) => setContests(res.data?.content ?? res.data ?? []))
-      .catch(() => toast.error("Failed to load contests"))
+      .catch(() => {
+        // Handle error silently - empty state will show "No contests available"
+        setContests([]);
+      })
       .finally(() => setLoading(false));
   }, [filter]);
 

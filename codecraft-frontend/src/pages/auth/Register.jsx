@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { authService } from "../../services/authService";
+import ErrorModal from "../../components/ErrorModal";
+import { parseError } from "../../utils/errorHandler";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Code2, UserPlus } from "lucide-react";
 
@@ -9,11 +11,12 @@ export default function Register() {
     const location = useLocation();
     const defaultRole = location.state?.role ?? "PLAYER";
 
-    const [role] = useState(defaultRole);
+    const [role, setRole] = useState(defaultRole);
     const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [showPw, setShowPw] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const [modalError, setModalError] = useState(null);
 
     const set = (f, v) => {
         setForm((p) => ({ ...p, [f]: v }));
@@ -45,14 +48,24 @@ export default function Register() {
         if (Object.keys(nextErrors).length > 0) return;
         setLoading(true);
         try {
-            await authService.register({ name: form.name, email: form.email, password: form.password });
+            if (role === "ADMIN") {
+                await authService.registerAdmin({ 
+                    name: form.name, 
+                    email: form.email, 
+                    password: form.password
+                });
+            } else {
+                await authService.register({ 
+                    name: form.name, 
+                    email: form.email, 
+                    password: form.password 
+                });
+            }
             toast.success("Account created! Please sign in.");
             navigate("/login");
         } catch (err) {
-            if (err.response?.status === 409) {
-                setErrors({ email: "Email already taken" });
-            }
-            toast.error(err.response?.data?.message ?? "Registration failed");
+            const parsedError = parseError(err);
+            setModalError(parsedError);
         } finally {
             setLoading(false);
         }
@@ -76,8 +89,20 @@ export default function Register() {
                     {loading && <div className="skeleton skeleton-line" />}
                     <div className="card border-dashed">
                         <p className="text-sm text-slate-600">
-                            Registration currently supports <span className="font-semibold text-slate-900">Player</span> accounts only.
-                            Host and Admin accounts must be created by an administrator.
+                            {role === "ADMIN" ? (
+                                <>
+                                    Create an <span className="font-semibold text-slate-900">Admin</span> account.
+                                    Host accounts must be created by an administrator.
+                                </>
+                            ) : role === "HOST" ? (
+                                <>
+                                    Host accounts are created by administrators only.
+                                </>
+                            ) : (
+                                <>
+                                    Register as a <span className="font-semibold text-slate-900">Player</span> to compete in contests.
+                                </>
+                            )}
                         </p>
                     </div>
 
@@ -87,12 +112,16 @@ export default function Register() {
                             {[
                                 { value: "PLAYER", title: "Player", sub: "Compete in contests", enabled: true },
                                 { value: "HOST", title: "Host", sub: "Company (under Host)", enabled: false },
-                                { value: "ADMIN", title: "Admin", sub: "Platform management", enabled: false },
+                                { value: "ADMIN", title: "Admin", sub: "Platform management", enabled: true },
                             ].map(({ value, title, sub, enabled }) => (
                                 <button
                                     key={value}
                                     type="button"
                                     disabled={!enabled}
+                                    onClick={() => {
+                                        setRole(value);
+                                        setErrors({});
+                                    }}
                                     aria-disabled={!enabled}
                                     className={`p-3 rounded-input border text-left transition-all ${value === role
                                             ? "border-black bg-yellow-300/40 text-black"
@@ -105,6 +134,8 @@ export default function Register() {
                             ))}
                         </div>
                     </div>
+
+
 
                     {/* Common fields */}
                     <div>
@@ -142,7 +173,6 @@ export default function Register() {
                         </div>
                     </div>
 
-
                     <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 py-2.5">
                         {loading
                             ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -160,6 +190,8 @@ export default function Register() {
                     <Link to="/" className="hover:text-slate-900 transition-colors">← Back to home</Link>
                 </p>
             </div>
+
+            <ErrorModal error={modalError} onClose={() => setModalError(null)} />
         </div>
     );
 }
